@@ -1,0 +1,2658 @@
+[
+    {
+        "Id": 1,
+        "ProvinceCode": 110000,
+        "ProvinceName": "北京",
+        "ProvinceJC": "BJ",
+        "cities": [
+            {
+                "Id": 1,
+                "CityCode": 110000,
+                "CityName": "北京市",
+                "ProvinceId": 1,
+                "CityJC": "BJS"
+            }
+        ]
+    },
+    {
+        "Id": 2,
+        "ProvinceCode": 120000,
+        "ProvinceName": "天津",
+        "ProvinceJC": "TJ",
+        "cities": [
+            {
+                "Id": 331,
+                "CityCode": 120000,
+                "CityName": "天津市",
+                "ProvinceId": 2,
+                "CityJC": "TJS"
+            }
+        ]
+    },
+    {
+        "Id": 3,
+        "ProvinceCode": 130000,
+        "ProvinceName": "河北",
+        "ProvinceJC": "HB",
+        "cities": [
+            {
+                "Id": 2,
+                "CityCode": 130100,
+                "CityName": "石家庄市",
+                "ProvinceId": 3,
+                "CityJC": "SJZS"
+            },
+            {
+                "Id": 3,
+                "CityCode": 130300,
+                "CityName": "秦皇岛市",
+                "ProvinceId": 3,
+                "CityJC": "QHDS"
+            },
+            {
+                "Id": 4,
+                "CityCode": 130400,
+                "CityName": "邯郸市",
+                "ProvinceId": 3,
+                "CityJC": "HDS"
+            },
+            {
+                "Id": 5,
+                "CityCode": 130500,
+                "CityName": "邢台市",
+                "ProvinceId": 3,
+                "CityJC": "XTS"
+            },
+            {
+                "Id": 6,
+                "CityCode": 130600,
+                "CityName": "保定市",
+                "ProvinceId": 3,
+                "CityJC": "BDS"
+            },
+            {
+                "Id": 7,
+                "CityCode": 130800,
+                "CityName": "承德市",
+                "ProvinceId": 3,
+                "CityJC": "CDS"
+            },
+            {
+                "Id": 8,
+                "CityCode": 131100,
+                "CityName": "衡水市",
+                "ProvinceId": 3,
+                "CityJC": "HSS"
+            },
+            {
+                "Id": 330,
+                "CityCode": 131200,
+                "CityName": "张家口市",
+                "ProvinceId": 3,
+                "CityJC": "ZJKS"
+            },
+            {
+                "Id": 336,
+                "CityCode": 131000,
+                "CityName": "廊坊市",
+                "ProvinceId": 3,
+                "CityJC": "LFS"
+            },
+            {
+                "Id": 337,
+                "CityCode": 130200,
+                "CityName": "唐山市",
+                "ProvinceId": 3,
+                "CityJC": "TSS"
+            },
+            {
+                "Id": 338,
+                "CityCode": 130900,
+                "CityName": "沧州市",
+                "ProvinceId": 3,
+                "CityJC": "CZS"
+            },
+            {
+                "Id": 765,
+                "CityCode": 130181,
+                "CityName": "辛集市",
+                "ProvinceId": 3,
+                "CityJC": "XJS"
+            },
+            {
+                "Id": 766,
+                "CityCode": 130682,
+                "CityName": "定州市",
+                "ProvinceId": 3,
+                "CityJC": "DZS"
+            }
+        ]
+    },
+    {
+        "Id": 4,
+        "ProvinceCode": 140000,
+        "ProvinceName": "山西",
+        "ProvinceJC": "SX",
+        "cities": [
+            {
+                "Id": 9,
+                "CityCode": 140100,
+                "CityName": "太原市",
+                "ProvinceId": 4,
+                "CityJC": "TYS"
+            },
+            {
+                "Id": 10,
+                "CityCode": 140200,
+                "CityName": "大同市",
+                "ProvinceId": 4,
+                "CityJC": "DTS"
+            },
+            {
+                "Id": 11,
+                "CityCode": 140300,
+                "CityName": "阳泉市",
+                "ProvinceId": 4,
+                "CityJC": "YQS"
+            },
+            {
+                "Id": 12,
+                "CityCode": 140400,
+                "CityName": "长治市",
+                "ProvinceId": 4,
+                "CityJC": "CZS"
+            },
+            {
+                "Id": 13,
+                "CityCode": 140500,
+                "CityName": "晋城市",
+                "ProvinceId": 4,
+                "CityJC": "JCS"
+            },
+            {
+                "Id": 14,
+                "CityCode": 140600,
+                "CityName": "朔州市",
+                "ProvinceId": 4,
+                "CityJC": "SZS"
+            },
+            {
+                "Id": 15,
+                "CityCode": 140700,
+                "CityName": "晋中市",
+                "ProvinceId": 4,
+                "CityJC": "JZS"
+            },
+            {
+                "Id": 16,
+                "CityCode": 140800,
+                "CityName": "运城市",
+                "ProvinceId": 4,
+                "CityJC": "YCS"
+            },
+            {
+                "Id": 17,
+                "CityCode": 140900,
+                "CityName": "忻州市",
+                "ProvinceId": 4,
+                "CityJC": "XZS"
+            },
+            {
+                "Id": 18,
+                "CityCode": 141000,
+                "CityName": "临汾市",
+                "ProvinceId": 4,
+                "CityJC": "LFS"
+            },
+            {
+                "Id": 19,
+                "CityCode": 141100,
+                "CityName": "吕梁市",
+                "ProvinceId": 4,
+                "CityJC": "LLS"
+            }
+        ]
+    },
+    {
+        "Id": 5,
+        "ProvinceCode": 150000,
+        "ProvinceName": "内蒙古",
+        "ProvinceJC": "NMG",
+        "cities": [
+            {
+                "Id": 20,
+                "CityCode": 150100,
+                "CityName": "呼和浩特市",
+                "ProvinceId": 5,
+                "CityJC": "HHHTS"
+            },
+            {
+                "Id": 21,
+                "CityCode": 150200,
+                "CityName": "包头市",
+                "ProvinceId": 5,
+                "CityJC": "BTS"
+            },
+            {
+                "Id": 22,
+                "CityCode": 150300,
+                "CityName": "乌海市",
+                "ProvinceId": 5,
+                "CityJC": "WHS"
+            },
+            {
+                "Id": 23,
+                "CityCode": 150400,
+                "CityName": "赤峰市",
+                "ProvinceId": 5,
+                "CityJC": "CFS"
+            },
+            {
+                "Id": 24,
+                "CityCode": 150500,
+                "CityName": "通辽市",
+                "ProvinceId": 5,
+                "CityJC": "TLS"
+            },
+            {
+                "Id": 25,
+                "CityCode": 150600,
+                "CityName": "鄂尔多斯市",
+                "ProvinceId": 5,
+                "CityJC": "EEDSS"
+            },
+            {
+                "Id": 26,
+                "CityCode": 150700,
+                "CityName": "呼伦贝尔市",
+                "ProvinceId": 5,
+                "CityJC": "HLBES"
+            },
+            {
+                "Id": 27,
+                "CityCode": 150800,
+                "CityName": "巴彦淖尔市",
+                "ProvinceId": 5,
+                "CityJC": "BYNES"
+            },
+            {
+                "Id": 28,
+                "CityCode": 150900,
+                "CityName": "乌兰察布市",
+                "ProvinceId": 5,
+                "CityJC": "WLCBS"
+            },
+            {
+                "Id": 29,
+                "CityCode": 152200,
+                "CityName": "兴安盟",
+                "ProvinceId": 5,
+                "CityJC": "XAM"
+            },
+            {
+                "Id": 30,
+                "CityCode": 152500,
+                "CityName": "锡林郭勒盟",
+                "ProvinceId": 5,
+                "CityJC": "XLGLM"
+            },
+            {
+                "Id": 31,
+                "CityCode": 152900,
+                "CityName": "阿拉善盟",
+                "ProvinceId": 5,
+                "CityJC": "ALSM"
+            }
+        ]
+    },
+    {
+        "Id": 6,
+        "ProvinceCode": 210000,
+        "ProvinceName": "辽宁",
+        "ProvinceJC": "LN",
+        "cities": [
+            {
+                "Id": 32,
+                "CityCode": 210100,
+                "CityName": "沈阳市",
+                "ProvinceId": 6,
+                "CityJC": "SYS"
+            },
+            {
+                "Id": 33,
+                "CityCode": 210200,
+                "CityName": "大连市",
+                "ProvinceId": 6,
+                "CityJC": "DLS"
+            },
+            {
+                "Id": 34,
+                "CityCode": 210300,
+                "CityName": "鞍山市",
+                "ProvinceId": 6,
+                "CityJC": "ASS"
+            },
+            {
+                "Id": 35,
+                "CityCode": 210400,
+                "CityName": "抚顺市",
+                "ProvinceId": 6,
+                "CityJC": "FSS"
+            },
+            {
+                "Id": 36,
+                "CityCode": 210500,
+                "CityName": "本溪市",
+                "ProvinceId": 6,
+                "CityJC": "BXS"
+            },
+            {
+                "Id": 37,
+                "CityCode": 210600,
+                "CityName": "丹东市",
+                "ProvinceId": 6,
+                "CityJC": "DDS"
+            },
+            {
+                "Id": 38,
+                "CityCode": 210700,
+                "CityName": "锦州市",
+                "ProvinceId": 6,
+                "CityJC": "JZS"
+            },
+            {
+                "Id": 39,
+                "CityCode": 210800,
+                "CityName": "营口市",
+                "ProvinceId": 6,
+                "CityJC": "YKS"
+            },
+            {
+                "Id": 40,
+                "CityCode": 210900,
+                "CityName": "阜新市",
+                "ProvinceId": 6,
+                "CityJC": "FXS"
+            },
+            {
+                "Id": 41,
+                "CityCode": 211000,
+                "CityName": "辽阳市",
+                "ProvinceId": 6,
+                "CityJC": "LYS"
+            },
+            {
+                "Id": 42,
+                "CityCode": 211100,
+                "CityName": "盘锦市",
+                "ProvinceId": 6,
+                "CityJC": "PJS"
+            },
+            {
+                "Id": 43,
+                "CityCode": 211200,
+                "CityName": "铁岭市",
+                "ProvinceId": 6,
+                "CityJC": "TLS"
+            },
+            {
+                "Id": 44,
+                "CityCode": 211300,
+                "CityName": "朝阳市",
+                "ProvinceId": 6,
+                "CityJC": "CYS"
+            },
+            {
+                "Id": 45,
+                "CityCode": 211400,
+                "CityName": "葫芦岛市",
+                "ProvinceId": 6,
+                "CityJC": "HLDS"
+            }
+        ]
+    },
+    {
+        "Id": 7,
+        "ProvinceCode": 220000,
+        "ProvinceName": "吉林",
+        "ProvinceJC": "JL",
+        "cities": [
+            {
+                "Id": 46,
+                "CityCode": 220100,
+                "CityName": "长春市",
+                "ProvinceId": 7,
+                "CityJC": "CCS"
+            },
+            {
+                "Id": 47,
+                "CityCode": 220200,
+                "CityName": "吉林市",
+                "ProvinceId": 7,
+                "CityJC": "JLS"
+            },
+            {
+                "Id": 48,
+                "CityCode": 220300,
+                "CityName": "四平市",
+                "ProvinceId": 7,
+                "CityJC": "SPS"
+            },
+            {
+                "Id": 49,
+                "CityCode": 220400,
+                "CityName": "辽源市",
+                "ProvinceId": 7,
+                "CityJC": "LYS"
+            },
+            {
+                "Id": 50,
+                "CityCode": 220500,
+                "CityName": "通化市",
+                "ProvinceId": 7,
+                "CityJC": "THS"
+            },
+            {
+                "Id": 51,
+                "CityCode": 220600,
+                "CityName": "白山市",
+                "ProvinceId": 7,
+                "CityJC": "BSS"
+            },
+            {
+                "Id": 52,
+                "CityCode": 220700,
+                "CityName": "松原市",
+                "ProvinceId": 7,
+                "CityJC": "SYS"
+            },
+            {
+                "Id": 53,
+                "CityCode": 220800,
+                "CityName": "白城市",
+                "ProvinceId": 7,
+                "CityJC": "BCS"
+            },
+            {
+                "Id": 54,
+                "CityCode": 222400,
+                "CityName": "延边朝鲜族自治州",
+                "ProvinceId": 7,
+                "CityJC": "YBCXZZZZ"
+            }
+        ]
+    },
+    {
+        "Id": 8,
+        "ProvinceCode": 230000,
+        "ProvinceName": "黑龙江",
+        "ProvinceJC": "HLJ",
+        "cities": [
+            {
+                "Id": 55,
+                "CityCode": 230100,
+                "CityName": "哈尔滨市",
+                "ProvinceId": 8,
+                "CityJC": "HEBS"
+            },
+            {
+                "Id": 56,
+                "CityCode": 230200,
+                "CityName": "齐齐哈尔市",
+                "ProvinceId": 8,
+                "CityJC": "QQHES"
+            },
+            {
+                "Id": 57,
+                "CityCode": 230300,
+                "CityName": "鸡西市",
+                "ProvinceId": 8,
+                "CityJC": "JXS"
+            },
+            {
+                "Id": 58,
+                "CityCode": 230400,
+                "CityName": "鹤岗市",
+                "ProvinceId": 8,
+                "CityJC": "HGS"
+            },
+            {
+                "Id": 59,
+                "CityCode": 230500,
+                "CityName": "双鸭山市",
+                "ProvinceId": 8,
+                "CityJC": "SYSS"
+            },
+            {
+                "Id": 60,
+                "CityCode": 230600,
+                "CityName": "大庆市",
+                "ProvinceId": 8,
+                "CityJC": "DQS"
+            },
+            {
+                "Id": 61,
+                "CityCode": 230700,
+                "CityName": "伊春市",
+                "ProvinceId": 8,
+                "CityJC": "YCS"
+            },
+            {
+                "Id": 62,
+                "CityCode": 230800,
+                "CityName": "佳木斯市",
+                "ProvinceId": 8,
+                "CityJC": "JMSS"
+            },
+            {
+                "Id": 63,
+                "CityCode": 230900,
+                "CityName": "七台河市",
+                "ProvinceId": 8,
+                "CityJC": "QTHS"
+            },
+            {
+                "Id": 64,
+                "CityCode": 231000,
+                "CityName": "牡丹江市",
+                "ProvinceId": 8,
+                "CityJC": "MDJS"
+            },
+            {
+                "Id": 65,
+                "CityCode": 231100,
+                "CityName": "黑河市",
+                "ProvinceId": 8,
+                "CityJC": "HHS"
+            },
+            {
+                "Id": 66,
+                "CityCode": 231200,
+                "CityName": "绥化市",
+                "ProvinceId": 8,
+                "CityJC": "SHS"
+            },
+            {
+                "Id": 67,
+                "CityCode": 232700,
+                "CityName": "大兴安岭地区",
+                "ProvinceId": 8,
+                "CityJC": "DXALDQ"
+            }
+        ]
+    },
+    {
+        "Id": 9,
+        "ProvinceCode": 310000,
+        "ProvinceName": "上海",
+        "ProvinceJC": "SH",
+        "cities": [
+            {
+                "Id": 68,
+                "CityCode": 310000,
+                "CityName": "上海市",
+                "ProvinceId": 9,
+                "CityJC": "SXQ"
+            }
+        ]
+    },
+    {
+        "Id": 10,
+        "ProvinceCode": 320000,
+        "ProvinceName": "江苏",
+        "ProvinceJC": "JS",
+        "cities": [
+            {
+                "Id": 69,
+                "CityCode": 320100,
+                "CityName": "南京市",
+                "ProvinceId": 10,
+                "CityJC": "NJS"
+            },
+            {
+                "Id": 70,
+                "CityCode": 320200,
+                "CityName": "无锡市",
+                "ProvinceId": 10,
+                "CityJC": "WXS"
+            },
+            {
+                "Id": 71,
+                "CityCode": 320300,
+                "CityName": "徐州市",
+                "ProvinceId": 10,
+                "CityJC": "XZS"
+            },
+            {
+                "Id": 72,
+                "CityCode": 320400,
+                "CityName": "常州市",
+                "ProvinceId": 10,
+                "CityJC": "CZS"
+            },
+            {
+                "Id": 73,
+                "CityCode": 320500,
+                "CityName": "苏州市",
+                "ProvinceId": 10,
+                "CityJC": "SZS"
+            },
+            {
+                "Id": 74,
+                "CityCode": 320600,
+                "CityName": "南通市",
+                "ProvinceId": 10,
+                "CityJC": "NTS"
+            },
+            {
+                "Id": 75,
+                "CityCode": 320700,
+                "CityName": "连云港市",
+                "ProvinceId": 10,
+                "CityJC": "LYGS"
+            },
+            {
+                "Id": 76,
+                "CityCode": 320800,
+                "CityName": "淮安市",
+                "ProvinceId": 10,
+                "CityJC": "HAS"
+            },
+            {
+                "Id": 77,
+                "CityCode": 320900,
+                "CityName": "盐城市",
+                "ProvinceId": 10,
+                "CityJC": "YCS"
+            },
+            {
+                "Id": 78,
+                "CityCode": 321000,
+                "CityName": "扬州市",
+                "ProvinceId": 10,
+                "CityJC": "YZS"
+            },
+            {
+                "Id": 79,
+                "CityCode": 321100,
+                "CityName": "镇江市",
+                "ProvinceId": 10,
+                "CityJC": "ZJS"
+            },
+            {
+                "Id": 80,
+                "CityCode": 321200,
+                "CityName": "泰州市",
+                "ProvinceId": 10,
+                "CityJC": "TZS"
+            },
+            {
+                "Id": 81,
+                "CityCode": 321300,
+                "CityName": "宿迁市",
+                "ProvinceId": 10,
+                "CityJC": "SQS"
+            }
+        ]
+    },
+    {
+        "Id": 11,
+        "ProvinceCode": 330000,
+        "ProvinceName": "浙江",
+        "ProvinceJC": "ZJ",
+        "cities": [
+            {
+                "Id": 82,
+                "CityCode": 330100,
+                "CityName": "杭州市",
+                "ProvinceId": 11,
+                "CityJC": "HZS"
+            },
+            {
+                "Id": 83,
+                "CityCode": 330200,
+                "CityName": "宁波市",
+                "ProvinceId": 11,
+                "CityJC": "NBS"
+            },
+            {
+                "Id": 84,
+                "CityCode": 330300,
+                "CityName": "温州市",
+                "ProvinceId": 11,
+                "CityJC": "WZS"
+            },
+            {
+                "Id": 85,
+                "CityCode": 330400,
+                "CityName": "嘉兴市",
+                "ProvinceId": 11,
+                "CityJC": "JXS"
+            },
+            {
+                "Id": 86,
+                "CityCode": 330500,
+                "CityName": "湖州市",
+                "ProvinceId": 11,
+                "CityJC": "HZS"
+            },
+            {
+                "Id": 87,
+                "CityCode": 330800,
+                "CityName": "衢州市",
+                "ProvinceId": 11,
+                "CityJC": "ZS"
+            },
+            {
+                "Id": 88,
+                "CityCode": 330900,
+                "CityName": "舟山市",
+                "ProvinceId": 11,
+                "CityJC": "ZSS"
+            },
+            {
+                "Id": 89,
+                "CityCode": 331000,
+                "CityName": "台州市",
+                "ProvinceId": 11,
+                "CityJC": "TZS"
+            },
+            {
+                "Id": 90,
+                "CityCode": 331100,
+                "CityName": "丽水市",
+                "ProvinceId": 11,
+                "CityJC": "LSS"
+            },
+            {
+                "Id": 335,
+                "CityCode": 331300,
+                "CityName": "绍兴市",
+                "ProvinceId": 11,
+                "CityJC": "SXS"
+            },
+            {
+                "Id": 339,
+                "CityCode": 330700,
+                "CityName": "金华市",
+                "ProvinceId": 11,
+                "CityJC": "JHS"
+            }
+        ]
+    },
+    {
+        "Id": 12,
+        "ProvinceCode": 340000,
+        "ProvinceName": "安徽",
+        "ProvinceJC": "AH",
+        "cities": [
+            {
+                "Id": 91,
+                "CityCode": 340100,
+                "CityName": "合肥市",
+                "ProvinceId": 12,
+                "CityJC": "HFS"
+            },
+            {
+                "Id": 92,
+                "CityCode": 340200,
+                "CityName": "芜湖市",
+                "ProvinceId": 12,
+                "CityJC": "WHS"
+            },
+            {
+                "Id": 93,
+                "CityCode": 340300,
+                "CityName": "蚌埠市",
+                "ProvinceId": 12,
+                "CityJC": "BBS"
+            },
+            {
+                "Id": 94,
+                "CityCode": 340400,
+                "CityName": "淮南市",
+                "ProvinceId": 12,
+                "CityJC": "HNS"
+            },
+            {
+                "Id": 95,
+                "CityCode": 340500,
+                "CityName": "马鞍山市",
+                "ProvinceId": 12,
+                "CityJC": "MASS"
+            },
+            {
+                "Id": 96,
+                "CityCode": 340600,
+                "CityName": "淮北市",
+                "ProvinceId": 12,
+                "CityJC": "HBS"
+            },
+            {
+                "Id": 97,
+                "CityCode": 340700,
+                "CityName": "铜陵市",
+                "ProvinceId": 12,
+                "CityJC": "TLS"
+            },
+            {
+                "Id": 98,
+                "CityCode": 340800,
+                "CityName": "安庆市",
+                "ProvinceId": 12,
+                "CityJC": "AQS"
+            },
+            {
+                "Id": 99,
+                "CityCode": 341000,
+                "CityName": "黄山市",
+                "ProvinceId": 12,
+                "CityJC": "HSS"
+            },
+            {
+                "Id": 100,
+                "CityCode": 341100,
+                "CityName": "滁州市",
+                "ProvinceId": 12,
+                "CityJC": "CZS"
+            },
+            {
+                "Id": 101,
+                "CityCode": 341200,
+                "CityName": "阜阳市",
+                "ProvinceId": 12,
+                "CityJC": "FYS"
+            },
+            {
+                "Id": 102,
+                "CityCode": 341300,
+                "CityName": "宿州市",
+                "ProvinceId": 12,
+                "CityJC": "SZS"
+            },
+            {
+                "Id": 104,
+                "CityCode": 341500,
+                "CityName": "六安市",
+                "ProvinceId": 12,
+                "CityJC": "LAS"
+            },
+            {
+                "Id": 105,
+                "CityCode": 341600,
+                "CityName": "亳州市",
+                "ProvinceId": 12,
+                "CityJC": "ZS"
+            },
+            {
+                "Id": 106,
+                "CityCode": 341700,
+                "CityName": "池州市",
+                "ProvinceId": 12,
+                "CityJC": "CZS"
+            },
+            {
+                "Id": 107,
+                "CityCode": 341800,
+                "CityName": "宣城市",
+                "ProvinceId": 12,
+                "CityJC": "XCS"
+            }
+        ]
+    },
+    {
+        "Id": 13,
+        "ProvinceCode": 350000,
+        "ProvinceName": "福建",
+        "ProvinceJC": "FJ",
+        "cities": [
+            {
+                "Id": 108,
+                "CityCode": 350100,
+                "CityName": "福州市",
+                "ProvinceId": 13,
+                "CityJC": "FZS"
+            },
+            {
+                "Id": 109,
+                "CityCode": 350200,
+                "CityName": "厦门市",
+                "ProvinceId": 13,
+                "CityJC": "XMS"
+            },
+            {
+                "Id": 110,
+                "CityCode": 350300,
+                "CityName": "莆田市",
+                "ProvinceId": 13,
+                "CityJC": "PTS"
+            },
+            {
+                "Id": 111,
+                "CityCode": 350400,
+                "CityName": "三明市",
+                "ProvinceId": 13,
+                "CityJC": "SMS"
+            },
+            {
+                "Id": 112,
+                "CityCode": 350500,
+                "CityName": "泉州市",
+                "ProvinceId": 13,
+                "CityJC": "QZS"
+            },
+            {
+                "Id": 113,
+                "CityCode": 350600,
+                "CityName": "漳州市",
+                "ProvinceId": 13,
+                "CityJC": "ZZS"
+            },
+            {
+                "Id": 114,
+                "CityCode": 350700,
+                "CityName": "南平市",
+                "ProvinceId": 13,
+                "CityJC": "NPS"
+            },
+            {
+                "Id": 115,
+                "CityCode": 350800,
+                "CityName": "龙岩市",
+                "ProvinceId": 13,
+                "CityJC": "LYS"
+            },
+            {
+                "Id": 116,
+                "CityCode": 350900,
+                "CityName": "宁德市",
+                "ProvinceId": 13,
+                "CityJC": "NDS"
+            }
+        ]
+    },
+    {
+        "Id": 14,
+        "ProvinceCode": 360000,
+        "ProvinceName": "江西",
+        "ProvinceJC": "JX",
+        "cities": [
+            {
+                "Id": 117,
+                "CityCode": 360100,
+                "CityName": "南昌市",
+                "ProvinceId": 14,
+                "CityJC": "NCS"
+            },
+            {
+                "Id": 118,
+                "CityCode": 360200,
+                "CityName": "景德镇市",
+                "ProvinceId": 14,
+                "CityJC": "JDZS"
+            },
+            {
+                "Id": 119,
+                "CityCode": 360300,
+                "CityName": "萍乡市",
+                "ProvinceId": 14,
+                "CityJC": "PXS"
+            },
+            {
+                "Id": 120,
+                "CityCode": 360400,
+                "CityName": "九江市",
+                "ProvinceId": 14,
+                "CityJC": "JJS"
+            },
+            {
+                "Id": 121,
+                "CityCode": 360500,
+                "CityName": "新余市",
+                "ProvinceId": 14,
+                "CityJC": "XYS"
+            },
+            {
+                "Id": 122,
+                "CityCode": 360600,
+                "CityName": "鹰潭市",
+                "ProvinceId": 14,
+                "CityJC": "YTS"
+            },
+            {
+                "Id": 123,
+                "CityCode": 360700,
+                "CityName": "赣州市",
+                "ProvinceId": 14,
+                "CityJC": "GZS"
+            },
+            {
+                "Id": 124,
+                "CityCode": 360800,
+                "CityName": "吉安市",
+                "ProvinceId": 14,
+                "CityJC": "JAS"
+            },
+            {
+                "Id": 125,
+                "CityCode": 360900,
+                "CityName": "宜春市",
+                "ProvinceId": 14,
+                "CityJC": "YCS"
+            },
+            {
+                "Id": 126,
+                "CityCode": 361000,
+                "CityName": "抚州市",
+                "ProvinceId": 14,
+                "CityJC": "FZS"
+            },
+            {
+                "Id": 127,
+                "CityCode": 361100,
+                "CityName": "上饶市",
+                "ProvinceId": 14,
+                "CityJC": "SRS"
+            }
+        ]
+    },
+    {
+        "Id": 15,
+        "ProvinceCode": 370000,
+        "ProvinceName": "山东",
+        "ProvinceJC": "SD",
+        "cities": [
+            {
+                "Id": 128,
+                "CityCode": 370100,
+                "CityName": "济南市",
+                "ProvinceId": 15,
+                "CityJC": "JNS"
+            },
+            {
+                "Id": 129,
+                "CityCode": 370200,
+                "CityName": "青岛市",
+                "ProvinceId": 15,
+                "CityJC": "QDS"
+            },
+            {
+                "Id": 130,
+                "CityCode": 370300,
+                "CityName": "淄博市",
+                "ProvinceId": 15,
+                "CityJC": "ZBS"
+            },
+            {
+                "Id": 131,
+                "CityCode": 370400,
+                "CityName": "枣庄市",
+                "ProvinceId": 15,
+                "CityJC": "ZZS"
+            },
+            {
+                "Id": 132,
+                "CityCode": 370500,
+                "CityName": "东营市",
+                "ProvinceId": 15,
+                "CityJC": "DYS"
+            },
+            {
+                "Id": 133,
+                "CityCode": 370600,
+                "CityName": "烟台市",
+                "ProvinceId": 15,
+                "CityJC": "YTS"
+            },
+            {
+                "Id": 134,
+                "CityCode": 370700,
+                "CityName": "潍坊市",
+                "ProvinceId": 15,
+                "CityJC": "WFS"
+            },
+            {
+                "Id": 135,
+                "CityCode": 370800,
+                "CityName": "济宁市",
+                "ProvinceId": 15,
+                "CityJC": "JNS"
+            },
+            {
+                "Id": 136,
+                "CityCode": 370900,
+                "CityName": "泰安市",
+                "ProvinceId": 15,
+                "CityJC": "TAS"
+            },
+            {
+                "Id": 137,
+                "CityCode": 371000,
+                "CityName": "威海 市",
+                "ProvinceId": 15,
+                "CityJC": "WHS"
+            },
+            {
+                "Id": 138,
+                "CityCode": 371100,
+                "CityName": "日照市",
+                "ProvinceId": 15,
+                "CityJC": "RZS"
+            },
+            {
+                "Id": 140,
+                "CityCode": 371300,
+                "CityName": "临沂市",
+                "ProvinceId": 15,
+                "CityJC": "LYS"
+            },
+            {
+                "Id": 141,
+                "CityCode": 371400,
+                "CityName": "德州市",
+                "ProvinceId": 15,
+                "CityJC": "DZS"
+            },
+            {
+                "Id": 142,
+                "CityCode": 371500,
+                "CityName": "聊城市",
+                "ProvinceId": 15,
+                "CityJC": "LCS"
+            },
+            {
+                "Id": 143,
+                "CityCode": 371600,
+                "CityName": "滨州市",
+                "ProvinceId": 15,
+                "CityJC": "BZS"
+            },
+            {
+                "Id": 144,
+                "CityCode": 371700,
+                "CityName": "菏泽市",
+                "ProvinceId": 15,
+                "CityJC": "HZS"
+            }
+        ]
+    },
+    {
+        "Id": 16,
+        "ProvinceCode": 410000,
+        "ProvinceName": "河南",
+        "ProvinceJC": "HN",
+        "cities": [
+            {
+                "Id": 145,
+                "CityCode": 410100,
+                "CityName": "郑州市",
+                "ProvinceId": 16,
+                "CityJC": "ZZS"
+            },
+            {
+                "Id": 146,
+                "CityCode": 410200,
+                "CityName": "开封市",
+                "ProvinceId": 16,
+                "CityJC": "KFS"
+            },
+            {
+                "Id": 147,
+                "CityCode": 410300,
+                "CityName": "洛阳市",
+                "ProvinceId": 16,
+                "CityJC": "LYS"
+            },
+            {
+                "Id": 148,
+                "CityCode": 410400,
+                "CityName": "平顶山市",
+                "ProvinceId": 16,
+                "CityJC": "PDSS"
+            },
+            {
+                "Id": 149,
+                "CityCode": 410500,
+                "CityName": "安阳市",
+                "ProvinceId": 16,
+                "CityJC": "AYS"
+            },
+            {
+                "Id": 150,
+                "CityCode": 410600,
+                "CityName": "鹤壁市",
+                "ProvinceId": 16,
+                "CityJC": "HBS"
+            },
+            {
+                "Id": 151,
+                "CityCode": 410700,
+                "CityName": "新乡市",
+                "ProvinceId": 16,
+                "CityJC": "XXS"
+            },
+            {
+                "Id": 152,
+                "CityCode": 410800,
+                "CityName": "焦作市",
+                "ProvinceId": 16,
+                "CityJC": "JZS"
+            },
+            {
+                "Id": 153,
+                "CityCode": 410900,
+                "CityName": "濮阳市",
+                "ProvinceId": 16,
+                "CityJC": "YS"
+            },
+            {
+                "Id": 154,
+                "CityCode": 411000,
+                "CityName": "许昌市",
+                "ProvinceId": 16,
+                "CityJC": "XCS"
+            },
+            {
+                "Id": 155,
+                "CityCode": 411100,
+                "CityName": "漯河市",
+                "ProvinceId": 16,
+                "CityJC": "HS"
+            },
+            {
+                "Id": 156,
+                "CityCode": 411200,
+                "CityName": "三门峡市",
+                "ProvinceId": 16,
+                "CityJC": "SMXS"
+            },
+            {
+                "Id": 157,
+                "CityCode": 411300,
+                "CityName": "南阳市",
+                "ProvinceId": 16,
+                "CityJC": "NYS"
+            },
+            {
+                "Id": 158,
+                "CityCode": 411400,
+                "CityName": "商丘市",
+                "ProvinceId": 16,
+                "CityJC": "SQS"
+            },
+            {
+                "Id": 159,
+                "CityCode": 411500,
+                "CityName": "信阳市",
+                "ProvinceId": 16,
+                "CityJC": "XYS"
+            },
+            {
+                "Id": 160,
+                "CityCode": 411600,
+                "CityName": "周口市",
+                "ProvinceId": 16,
+                "CityJC": "ZKS"
+            },
+            {
+                "Id": 161,
+                "CityCode": 411700,
+                "CityName": "驻马店市",
+                "ProvinceId": 16,
+                "CityJC": "ZMDS"
+            },
+            {
+                "Id": 767,
+                "CityCode": 419001,
+                "CityName": "济源市",
+                "ProvinceId": 16,
+                "CityJC": "JYS"
+            }
+        ]
+    },
+    {
+        "Id": 17,
+        "ProvinceCode": 420000,
+        "ProvinceName": "湖北",
+        "ProvinceJC": "HB",
+        "cities": [
+            {
+                "Id": 162,
+                "CityCode": 420100,
+                "CityName": "武汉市",
+                "ProvinceId": 17,
+                "CityJC": "WHS"
+            },
+            {
+                "Id": 163,
+                "CityCode": 420200,
+                "CityName": "黄石市",
+                "ProvinceId": 17,
+                "CityJC": "HSS"
+            },
+            {
+                "Id": 164,
+                "CityCode": 420300,
+                "CityName": "十堰市",
+                "ProvinceId": 17,
+                "CityJC": "SYS"
+            },
+            {
+                "Id": 165,
+                "CityCode": 420500,
+                "CityName": "宜昌市",
+                "ProvinceId": 17,
+                "CityJC": "YCS"
+            },
+            {
+                "Id": 166,
+                "CityCode": 420600,
+                "CityName": "襄阳市",
+                "ProvinceId": 17,
+                "CityJC": "XFS"
+            },
+            {
+                "Id": 167,
+                "CityCode": 420700,
+                "CityName": "鄂州市",
+                "ProvinceId": 17,
+                "CityJC": "EZS"
+            },
+            {
+                "Id": 168,
+                "CityCode": 420800,
+                "CityName": "荆门市",
+                "ProvinceId": 17,
+                "CityJC": "JMS"
+            },
+            {
+                "Id": 169,
+                "CityCode": 420900,
+                "CityName": "孝感市",
+                "ProvinceId": 17,
+                "CityJC": "XGS"
+            },
+            {
+                "Id": 170,
+                "CityCode": 421000,
+                "CityName": "荆州市",
+                "ProvinceId": 17,
+                "CityJC": "JZS"
+            },
+            {
+                "Id": 171,
+                "CityCode": 421100,
+                "CityName": "黄冈市",
+                "ProvinceId": 17,
+                "CityJC": "HGS"
+            },
+            {
+                "Id": 172,
+                "CityCode": 421200,
+                "CityName": "咸宁市",
+                "ProvinceId": 17,
+                "CityJC": "XNS"
+            },
+            {
+                "Id": 173,
+                "CityCode": 421300,
+                "CityName": "随州市",
+                "ProvinceId": 17,
+                "CityJC": "SZS"
+            },
+            {
+                "Id": 174,
+                "CityCode": 422800,
+                "CityName": "恩施土家族苗族自治州",
+                "ProvinceId": 17,
+                "CityJC": "ESTJZMZZZZ"
+            }
+        ]
+    },
+    {
+        "Id": 18,
+        "ProvinceCode": 430000,
+        "ProvinceName": "湖南",
+        "ProvinceJC": "HN",
+        "cities": [
+            {
+                "Id": 175,
+                "CityCode": 430100,
+                "CityName": "长沙市",
+                "ProvinceId": 18,
+                "CityJC": "CSS"
+            },
+            {
+                "Id": 176,
+                "CityCode": 430200,
+                "CityName": "株洲市",
+                "ProvinceId": 18,
+                "CityJC": "ZZS"
+            },
+            {
+                "Id": 177,
+                "CityCode": 430300,
+                "CityName": "湘潭市",
+                "ProvinceId": 18,
+                "CityJC": "XTS"
+            },
+            {
+                "Id": 178,
+                "CityCode": 430400,
+                "CityName": "衡阳市",
+                "ProvinceId": 18,
+                "CityJC": "HYS"
+            },
+            {
+                "Id": 179,
+                "CityCode": 430500,
+                "CityName": "邵阳市",
+                "ProvinceId": 18,
+                "CityJC": "SYS"
+            },
+            {
+                "Id": 180,
+                "CityCode": 430600,
+                "CityName": "岳阳市",
+                "ProvinceId": 18,
+                "CityJC": "YYS"
+            },
+            {
+                "Id": 181,
+                "CityCode": 430700,
+                "CityName": "常德市",
+                "ProvinceId": 18,
+                "CityJC": "CDS"
+            },
+            {
+                "Id": 182,
+                "CityCode": 430800,
+                "CityName": "张家界市",
+                "ProvinceId": 18,
+                "CityJC": "ZJJS"
+            },
+            {
+                "Id": 183,
+                "CityCode": 430900,
+                "CityName": "益阳市",
+                "ProvinceId": 18,
+                "CityJC": "YYS"
+            },
+            {
+                "Id": 184,
+                "CityCode": 431000,
+                "CityName": "郴州市",
+                "ProvinceId": 18,
+                "CityJC": "CZS"
+            },
+            {
+                "Id": 185,
+                "CityCode": 431100,
+                "CityName": "永州市",
+                "ProvinceId": 18,
+                "CityJC": "YZS"
+            },
+            {
+                "Id": 186,
+                "CityCode": 431200,
+                "CityName": "怀化市",
+                "ProvinceId": 18,
+                "CityJC": "HHS"
+            },
+            {
+                "Id": 187,
+                "CityCode": 431300,
+                "CityName": "娄底市",
+                "ProvinceId": 18,
+                "CityJC": "LDS"
+            },
+            {
+                "Id": 188,
+                "CityCode": 433100,
+                "CityName": "湘西土家族苗族自治州",
+                "ProvinceId": 18,
+                "CityJC": "XXTJZMZZZZ"
+            }
+        ]
+    },
+    {
+        "Id": 19,
+        "ProvinceCode": 440000,
+        "ProvinceName": "广东",
+        "ProvinceJC": "GD",
+        "cities": [
+            {
+                "Id": 189,
+                "CityCode": 440100,
+                "CityName": "广州市",
+                "ProvinceId": 19,
+                "CityJC": "GZS"
+            },
+            {
+                "Id": 190,
+                "CityCode": 440200,
+                "CityName": "韶关市",
+                "ProvinceId": 19,
+                "CityJC": "SGS"
+            },
+            {
+                "Id": 191,
+                "CityCode": 440300,
+                "CityName": "深圳市",
+                "ProvinceId": 19,
+                "CityJC": "SS"
+            },
+            {
+                "Id": 192,
+                "CityCode": 440400,
+                "CityName": "珠海市",
+                "ProvinceId": 19,
+                "CityJC": "ZHS"
+            },
+            {
+                "Id": 193,
+                "CityCode": 440500,
+                "CityName": "汕头市",
+                "ProvinceId": 19,
+                "CityJC": "STS"
+            },
+            {
+                "Id": 194,
+                "CityCode": 440600,
+                "CityName": "佛山市",
+                "ProvinceId": 19,
+                "CityJC": "FSS"
+            },
+            {
+                "Id": 195,
+                "CityCode": 440700,
+                "CityName": "江门市",
+                "ProvinceId": 19,
+                "CityJC": "JMS"
+            },
+            {
+                "Id": 196,
+                "CityCode": 440800,
+                "CityName": "湛江市",
+                "ProvinceId": 19,
+                "CityJC": "ZJS"
+            },
+            {
+                "Id": 197,
+                "CityCode": 440900,
+                "CityName": "茂名市",
+                "ProvinceId": 19,
+                "CityJC": "MMS"
+            },
+            {
+                "Id": 198,
+                "CityCode": 441200,
+                "CityName": "肇庆市",
+                "ProvinceId": 19,
+                "CityJC": "ZQS"
+            },
+            {
+                "Id": 199,
+                "CityCode": 441300,
+                "CityName": "惠州市",
+                "ProvinceId": 19,
+                "CityJC": "HZS"
+            },
+            {
+                "Id": 200,
+                "CityCode": 441400,
+                "CityName": "梅州市",
+                "ProvinceId": 19,
+                "CityJC": "MZS"
+            },
+            {
+                "Id": 201,
+                "CityCode": 441500,
+                "CityName": "汕尾市",
+                "ProvinceId": 19,
+                "CityJC": "SWS"
+            },
+            {
+                "Id": 202,
+                "CityCode": 441600,
+                "CityName": "河源市",
+                "ProvinceId": 19,
+                "CityJC": "HYS"
+            },
+            {
+                "Id": 203,
+                "CityCode": 441700,
+                "CityName": "阳江市",
+                "ProvinceId": 19,
+                "CityJC": "YJS"
+            },
+            {
+                "Id": 204,
+                "CityCode": 441800,
+                "CityName": "清远市",
+                "ProvinceId": 19,
+                "CityJC": "QYS"
+            },
+            {
+                "Id": 205,
+                "CityCode": 441900,
+                "CityName": "东莞市",
+                "ProvinceId": 19,
+                "CityJC": "DS"
+            },
+            {
+                "Id": 206,
+                "CityCode": 442000,
+                "CityName": "中山市",
+                "ProvinceId": 19,
+                "CityJC": "ZSS"
+            },
+            {
+                "Id": 207,
+                "CityCode": 445100,
+                "CityName": "潮州市",
+                "ProvinceId": 19,
+                "CityJC": "CZS"
+            },
+            {
+                "Id": 208,
+                "CityCode": 445200,
+                "CityName": "揭阳市",
+                "ProvinceId": 19,
+                "CityJC": "JYS"
+            },
+            {
+                "Id": 209,
+                "CityCode": 445300,
+                "CityName": "云浮市",
+                "ProvinceId": 19,
+                "CityJC": "YFS"
+            }
+        ]
+    },
+    {
+        "Id": 20,
+        "ProvinceCode": 450000,
+        "ProvinceName": "广西",
+        "ProvinceJC": "GX",
+        "cities": [
+            {
+                "Id": 210,
+                "CityCode": 450100,
+                "CityName": "南宁市",
+                "ProvinceId": 20,
+                "CityJC": "NNS"
+            },
+            {
+                "Id": 211,
+                "CityCode": 450200,
+                "CityName": "柳州市",
+                "ProvinceId": 20,
+                "CityJC": "LZS"
+            },
+            {
+                "Id": 212,
+                "CityCode": 450300,
+                "CityName": "桂林市",
+                "ProvinceId": 20,
+                "CityJC": "GLS"
+            },
+            {
+                "Id": 213,
+                "CityCode": 450400,
+                "CityName": "梧州市",
+                "ProvinceId": 20,
+                "CityJC": "WZS"
+            },
+            {
+                "Id": 214,
+                "CityCode": 450500,
+                "CityName": "北海市",
+                "ProvinceId": 20,
+                "CityJC": "BHS"
+            },
+            {
+                "Id": 215,
+                "CityCode": 450600,
+                "CityName": "防城港市",
+                "ProvinceId": 20,
+                "CityJC": "FCGS"
+            },
+            {
+                "Id": 216,
+                "CityCode": 450700,
+                "CityName": "钦州市",
+                "ProvinceId": 20,
+                "CityJC": "QZS"
+            },
+            {
+                "Id": 217,
+                "CityCode": 450800,
+                "CityName": "贵港市",
+                "ProvinceId": 20,
+                "CityJC": "GGS"
+            },
+            {
+                "Id": 218,
+                "CityCode": 450900,
+                "CityName": "玉林市",
+                "ProvinceId": 20,
+                "CityJC": "YLS"
+            },
+            {
+                "Id": 219,
+                "CityCode": 451000,
+                "CityName": "百色市",
+                "ProvinceId": 20,
+                "CityJC": "BSS"
+            },
+            {
+                "Id": 220,
+                "CityCode": 451100,
+                "CityName": "贺州市",
+                "ProvinceId": 20,
+                "CityJC": "HZS"
+            },
+            {
+                "Id": 221,
+                "CityCode": 451200,
+                "CityName": "河池市",
+                "ProvinceId": 20,
+                "CityJC": "HCS"
+            },
+            {
+                "Id": 222,
+                "CityCode": 451300,
+                "CityName": "来宾市",
+                "ProvinceId": 20,
+                "CityJC": "LBS"
+            },
+            {
+                "Id": 223,
+                "CityCode": 451400,
+                "CityName": "崇左市",
+                "ProvinceId": 20,
+                "CityJC": "CZS"
+            }
+        ]
+    },
+    {
+        "Id": 21,
+        "ProvinceCode": 460000,
+        "ProvinceName": "海南",
+        "ProvinceJC": "HN",
+        "cities": [
+            {
+                "Id": 224,
+                "CityCode": 460100,
+                "CityName": "海口市",
+                "ProvinceId": 21,
+                "CityJC": "HKS"
+            },
+            {
+                "Id": 225,
+                "CityCode": 460200,
+                "CityName": "三亚市",
+                "ProvinceId": 21,
+                "CityJC": "SYS"
+            },
+            {
+                "Id": 762,
+                "CityCode": 460400,
+                "CityName": "儋州市",
+                "ProvinceId": 21,
+                "CityJC": "CZS"
+            }
+        ]
+    },
+    {
+        "Id": 22,
+        "ProvinceCode": 500000,
+        "ProvinceName": "重庆",
+        "ProvinceJC": "ZQ",
+        "cities": [
+            {
+                "Id": 332,
+                "CityCode": 500000,
+                "CityName": "重庆市",
+                "ProvinceId": 22,
+                "CityJC": "ZQS"
+            }
+        ]
+    },
+    {
+        "Id": 23,
+        "ProvinceCode": 510000,
+        "ProvinceName": "四川",
+        "ProvinceJC": "SC",
+        "cities": [
+            {
+                "Id": 226,
+                "CityCode": 510100,
+                "CityName": "成都市",
+                "ProvinceId": 23,
+                "CityJC": "CDS"
+            },
+            {
+                "Id": 227,
+                "CityCode": 510300,
+                "CityName": "自贡市",
+                "ProvinceId": 23,
+                "CityJC": "ZGS"
+            },
+            {
+                "Id": 228,
+                "CityCode": 510400,
+                "CityName": "攀枝花市",
+                "ProvinceId": 23,
+                "CityJC": "PZHS"
+            },
+            {
+                "Id": 229,
+                "CityCode": 510500,
+                "CityName": "泸州市",
+                "ProvinceId": 23,
+                "CityJC": "ZS"
+            },
+            {
+                "Id": 230,
+                "CityCode": 510600,
+                "CityName": "德阳市",
+                "ProvinceId": 23,
+                "CityJC": "DYS"
+            },
+            {
+                "Id": 231,
+                "CityCode": 510700,
+                "CityName": "绵阳市",
+                "ProvinceId": 23,
+                "CityJC": "MYS"
+            },
+            {
+                "Id": 232,
+                "CityCode": 510800,
+                "CityName": "广元市",
+                "ProvinceId": 23,
+                "CityJC": "GYS"
+            },
+            {
+                "Id": 233,
+                "CityCode": 510900,
+                "CityName": "遂宁市",
+                "ProvinceId": 23,
+                "CityJC": "SNS"
+            },
+            {
+                "Id": 234,
+                "CityCode": 511000,
+                "CityName": "内江市",
+                "ProvinceId": 23,
+                "CityJC": "NJS"
+            },
+            {
+                "Id": 235,
+                "CityCode": 511100,
+                "CityName": "乐山市",
+                "ProvinceId": 23,
+                "CityJC": "LSS"
+            },
+            {
+                "Id": 236,
+                "CityCode": 511300,
+                "CityName": "南充市",
+                "ProvinceId": 23,
+                "CityJC": "NCS"
+            },
+            {
+                "Id": 237,
+                "CityCode": 511400,
+                "CityName": "眉山市",
+                "ProvinceId": 23,
+                "CityJC": "MSS"
+            },
+            {
+                "Id": 238,
+                "CityCode": 511500,
+                "CityName": "宜宾市",
+                "ProvinceId": 23,
+                "CityJC": "YBS"
+            },
+            {
+                "Id": 239,
+                "CityCode": 511600,
+                "CityName": "广安市",
+                "ProvinceId": 23,
+                "CityJC": "GAS"
+            },
+            {
+                "Id": 240,
+                "CityCode": 511700,
+                "CityName": "达州市",
+                "ProvinceId": 23,
+                "CityJC": "DZS"
+            },
+            {
+                "Id": 241,
+                "CityCode": 511800,
+                "CityName": "雅安市",
+                "ProvinceId": 23,
+                "CityJC": "YAS"
+            },
+            {
+                "Id": 242,
+                "CityCode": 511900,
+                "CityName": "巴中市",
+                "ProvinceId": 23,
+                "CityJC": "BZS"
+            },
+            {
+                "Id": 243,
+                "CityCode": 512000,
+                "CityName": "资阳市",
+                "ProvinceId": 23,
+                "CityJC": "ZYS"
+            },
+            {
+                "Id": 244,
+                "CityCode": 513200,
+                "CityName": "阿坝藏族羌族自治州",
+                "ProvinceId": 23,
+                "CityJC": "ABCZQZZZZ"
+            },
+            {
+                "Id": 245,
+                "CityCode": 513300,
+                "CityName": "甘孜藏族自治州",
+                "ProvinceId": 23,
+                "CityJC": "GZCZZZZ"
+            },
+            {
+                "Id": 246,
+                "CityCode": 513400,
+                "CityName": "凉山彝族自治州",
+                "ProvinceId": 23,
+                "CityJC": "LSYZZZZ"
+            }
+        ]
+    },
+    {
+        "Id": 24,
+        "ProvinceCode": 520000,
+        "ProvinceName": "贵州",
+        "ProvinceJC": "GZ",
+        "cities": [
+            {
+                "Id": 247,
+                "CityCode": 520100,
+                "CityName": "贵阳市",
+                "ProvinceId": 24,
+                "CityJC": "GYS"
+            },
+            {
+                "Id": 248,
+                "CityCode": 520200,
+                "CityName": "六盘水市",
+                "ProvinceId": 24,
+                "CityJC": "LPSS"
+            },
+            {
+                "Id": 249,
+                "CityCode": 520300,
+                "CityName": "遵义市",
+                "ProvinceId": 24,
+                "CityJC": "ZYS"
+            },
+            {
+                "Id": 250,
+                "CityCode": 520400,
+                "CityName": "安顺市",
+                "ProvinceId": 24,
+                "CityJC": "ASS"
+            },
+            {
+                "Id": 251,
+                "CityCode": 522200,
+                "CityName": "铜仁市",
+                "ProvinceId": 24,
+                "CityJC": "TRDQ"
+            },
+            {
+                "Id": 252,
+                "CityCode": 522300,
+                "CityName": "黔西南布依族苗族自治州",
+                "ProvinceId": 24,
+                "CityJC": "QXNBYZMZZZ"
+            },
+            {
+                "Id": 253,
+                "CityCode": 522400,
+                "CityName": "毕节市",
+                "ProvinceId": 24,
+                "CityJC": "BJDQ"
+            },
+            {
+                "Id": 254,
+                "CityCode": 522600,
+                "CityName": "黔东南苗族侗族自治州",
+                "ProvinceId": 24,
+                "CityJC": "QDNMZDZZZZ"
+            },
+            {
+                "Id": 255,
+                "CityCode": 522700,
+                "CityName": "黔南布依族苗族自治州",
+                "ProvinceId": 24,
+                "CityJC": "QNBYZMZZZZ"
+            }
+        ]
+    },
+    {
+        "Id": 25,
+        "ProvinceCode": 530000,
+        "ProvinceName": "云南",
+        "ProvinceJC": "YN",
+        "cities": [
+            {
+                "Id": 256,
+                "CityCode": 530100,
+                "CityName": "昆明市",
+                "ProvinceId": 25,
+                "CityJC": "KMS"
+            },
+            {
+                "Id": 257,
+                "CityCode": 530300,
+                "CityName": "曲靖市",
+                "ProvinceId": 25,
+                "CityJC": "QJS"
+            },
+            {
+                "Id": 258,
+                "CityCode": 530400,
+                "CityName": "玉溪市",
+                "ProvinceId": 25,
+                "CityJC": "YXS"
+            },
+            {
+                "Id": 259,
+                "CityCode": 530500,
+                "CityName": "保山市",
+                "ProvinceId": 25,
+                "CityJC": "BSS"
+            },
+            {
+                "Id": 260,
+                "CityCode": 530600,
+                "CityName": "昭通市",
+                "ProvinceId": 25,
+                "CityJC": "ZTS"
+            },
+            {
+                "Id": 261,
+                "CityCode": 530700,
+                "CityName": "丽江市",
+                "ProvinceId": 25,
+                "CityJC": "LJS"
+            },
+            {
+                "Id": 262,
+                "CityCode": 530800,
+                "CityName": "普洱市",
+                "ProvinceId": 25,
+                "CityJC": "SMS"
+            },
+            {
+                "Id": 263,
+                "CityCode": 530900,
+                "CityName": "临沧市",
+                "ProvinceId": 25,
+                "CityJC": "LCS"
+            },
+            {
+                "Id": 369,
+                "CityCode": 532301,
+                "CityName": "楚雄彝族自治州",
+                "ProvinceId": 25,
+                "CityJC": "CXZ"
+            },
+            {
+                "Id": 370,
+                "CityCode": 532522,
+                "CityName": "红河哈尼族彝族自治州",
+                "ProvinceId": 25,
+                "CityJC": "HHZ"
+            },
+            {
+                "Id": 371,
+                "CityCode": 532621,
+                "CityName": "文山壮族苗族自治州",
+                "ProvinceId": 25,
+                "CityJC": "WSZ"
+            },
+            {
+                "Id": 372,
+                "CityCode": 532801,
+                "CityName": "西双版纳傣族自治州",
+                "ProvinceId": 25,
+                "CityJC": "XSBNZ"
+            },
+            {
+                "Id": 373,
+                "CityCode": 532901,
+                "CityName": "大理白族自治州",
+                "ProvinceId": 25,
+                "CityJC": "DLZ"
+            },
+            {
+                "Id": 374,
+                "CityCode": 533103,
+                "CityName": "德宏傣族景颇族自治州",
+                "ProvinceId": 25,
+                "CityJC": "DHZ"
+            },
+            {
+                "Id": 375,
+                "CityCode": 533321,
+                "CityName": "怒江傈僳族自治州",
+                "ProvinceId": 25,
+                "CityJC": "NJZ"
+            },
+            {
+                "Id": 376,
+                "CityCode": 533421,
+                "CityName": "迪庆藏族自治州",
+                "ProvinceId": 25,
+                "CityJC": "DQZ"
+            }
+        ]
+    },
+    {
+        "Id": 26,
+        "ProvinceCode": 540000,
+        "ProvinceName": "西藏",
+        "ProvinceJC": "XC",
+        "cities": [
+            {
+                "Id": 271,
+                "CityCode": 540100,
+                "CityName": "拉萨市",
+                "ProvinceId": 26,
+                "CityJC": "LSS"
+            },
+            {
+                "Id": 272,
+                "CityCode": 542100,
+                "CityName": "昌都市",
+                "ProvinceId": 26,
+                "CityJC": "CDDQ"
+            },
+            {
+                "Id": 273,
+                "CityCode": 542200,
+                "CityName": "山南市",
+                "ProvinceId": 26,
+                "CityJC": "SNDQ"
+            },
+            {
+                "Id": 274,
+                "CityCode": 542300,
+                "CityName": "日喀则市",
+                "ProvinceId": 26,
+                "CityJC": "RKZDQ"
+            },
+            {
+                "Id": 275,
+                "CityCode": 542400,
+                "CityName": "那曲市",
+                "ProvinceId": 26,
+                "CityJC": "NQDQ"
+            },
+            {
+                "Id": 276,
+                "CityCode": 542500,
+                "CityName": "阿里地区",
+                "ProvinceId": 26,
+                "CityJC": "ALDQ"
+            },
+            {
+                "Id": 277,
+                "CityCode": 542600,
+                "CityName": "林芝市",
+                "ProvinceId": 26,
+                "CityJC": "LZDQ"
+            }
+        ]
+    },
+    {
+        "Id": 27,
+        "ProvinceCode": 610000,
+        "ProvinceName": "陕西",
+        "ProvinceJC": "SX",
+        "cities": [
+            {
+                "Id": 278,
+                "CityCode": 610100,
+                "CityName": "西安市",
+                "ProvinceId": 27,
+                "CityJC": "XAS"
+            },
+            {
+                "Id": 279,
+                "CityCode": 610200,
+                "CityName": "铜川市",
+                "ProvinceId": 27,
+                "CityJC": "TCS"
+            },
+            {
+                "Id": 280,
+                "CityCode": 610300,
+                "CityName": "宝鸡市",
+                "ProvinceId": 27,
+                "CityJC": "BJS"
+            },
+            {
+                "Id": 281,
+                "CityCode": 610400,
+                "CityName": "咸阳市",
+                "ProvinceId": 27,
+                "CityJC": "XYS"
+            },
+            {
+                "Id": 282,
+                "CityCode": 610500,
+                "CityName": "渭南市",
+                "ProvinceId": 27,
+                "CityJC": "WNS"
+            },
+            {
+                "Id": 283,
+                "CityCode": 610600,
+                "CityName": "延安市",
+                "ProvinceId": 27,
+                "CityJC": "YAS"
+            },
+            {
+                "Id": 284,
+                "CityCode": 610700,
+                "CityName": "汉中市",
+                "ProvinceId": 27,
+                "CityJC": "HZS"
+            },
+            {
+                "Id": 285,
+                "CityCode": 610800,
+                "CityName": "榆林市",
+                "ProvinceId": 27,
+                "CityJC": "YLS"
+            },
+            {
+                "Id": 286,
+                "CityCode": 610900,
+                "CityName": "安康市",
+                "ProvinceId": 27,
+                "CityJC": "AKS"
+            },
+            {
+                "Id": 287,
+                "CityCode": 611000,
+                "CityName": "商洛市",
+                "ProvinceId": 27,
+                "CityJC": "SLS"
+            }
+        ]
+    },
+    {
+        "Id": 28,
+        "ProvinceCode": 620000,
+        "ProvinceName": "甘肃",
+        "ProvinceJC": "GS",
+        "cities": [
+            {
+                "Id": 288,
+                "CityCode": 620100,
+                "CityName": "兰州市",
+                "ProvinceId": 28,
+                "CityJC": "LZS"
+            },
+            {
+                "Id": 289,
+                "CityCode": 620200,
+                "CityName": "嘉峪关市",
+                "ProvinceId": 28,
+                "CityJC": "JYGS"
+            },
+            {
+                "Id": 290,
+                "CityCode": 620300,
+                "CityName": "金昌市",
+                "ProvinceId": 28,
+                "CityJC": "JCS"
+            },
+            {
+                "Id": 291,
+                "CityCode": 620400,
+                "CityName": "白银市",
+                "ProvinceId": 28,
+                "CityJC": "BYS"
+            },
+            {
+                "Id": 292,
+                "CityCode": 620500,
+                "CityName": "天水市",
+                "ProvinceId": 28,
+                "CityJC": "TSS"
+            },
+            {
+                "Id": 293,
+                "CityCode": 620600,
+                "CityName": "武威市",
+                "ProvinceId": 28,
+                "CityJC": "WWS"
+            },
+            {
+                "Id": 294,
+                "CityCode": 620700,
+                "CityName": "张掖市",
+                "ProvinceId": 28,
+                "CityJC": "ZYS"
+            },
+            {
+                "Id": 295,
+                "CityCode": 620800,
+                "CityName": "平凉市",
+                "ProvinceId": 28,
+                "CityJC": "PLS"
+            },
+            {
+                "Id": 296,
+                "CityCode": 620900,
+                "CityName": "酒泉市",
+                "ProvinceId": 28,
+                "CityJC": "JQS"
+            },
+            {
+                "Id": 297,
+                "CityCode": 621000,
+                "CityName": "庆阳市",
+                "ProvinceId": 28,
+                "CityJC": "QYS"
+            },
+            {
+                "Id": 298,
+                "CityCode": 621100,
+                "CityName": "定西市",
+                "ProvinceId": 28,
+                "CityJC": "DXS"
+            },
+            {
+                "Id": 299,
+                "CityCode": 621200,
+                "CityName": "陇南市",
+                "ProvinceId": 28,
+                "CityJC": "LNS"
+            },
+            {
+                "Id": 300,
+                "CityCode": 622900,
+                "CityName": "临夏回族自治州",
+                "ProvinceId": 28,
+                "CityJC": "LXHZZZZ"
+            },
+            {
+                "Id": 301,
+                "CityCode": 623000,
+                "CityName": "甘南藏族自治州",
+                "ProvinceId": 28,
+                "CityJC": "GNCZZZZ"
+            }
+        ]
+    },
+    {
+        "Id": 29,
+        "ProvinceCode": 630000,
+        "ProvinceName": "青海",
+        "ProvinceJC": "QH",
+        "cities": [
+            {
+                "Id": 302,
+                "CityCode": 630100,
+                "CityName": "西宁市",
+                "ProvinceId": 29,
+                "CityJC": "XNS"
+            },
+            {
+                "Id": 303,
+                "CityCode": 632100,
+                "CityName": "海东市",
+                "ProvinceId": 29,
+                "CityJC": "HDDQ"
+            },
+            {
+                "Id": 304,
+                "CityCode": 632200,
+                "CityName": "海北藏族自治州",
+                "ProvinceId": 29,
+                "CityJC": "HBCZZZZ"
+            },
+            {
+                "Id": 305,
+                "CityCode": 632300,
+                "CityName": "黄南藏族自治州",
+                "ProvinceId": 29,
+                "CityJC": "HNCZZZZ"
+            },
+            {
+                "Id": 306,
+                "CityCode": 632500,
+                "CityName": "海南藏族自治州",
+                "ProvinceId": 29,
+                "CityJC": "HNCZZZZ"
+            },
+            {
+                "Id": 307,
+                "CityCode": 632600,
+                "CityName": "果洛藏族自治州",
+                "ProvinceId": 29,
+                "CityJC": "GLCZZZZ"
+            },
+            {
+                "Id": 308,
+                "CityCode": 632700,
+                "CityName": "玉树藏族自治州",
+                "ProvinceId": 29,
+                "CityJC": "YSCZZZZ"
+            },
+            {
+                "Id": 309,
+                "CityCode": 632800,
+                "CityName": "海西蒙古族藏族自治州",
+                "ProvinceId": 29,
+                "CityJC": "HXMGZCZZZZ"
+            }
+        ]
+    },
+    {
+        "Id": 30,
+        "ProvinceCode": 640000,
+        "ProvinceName": "宁夏",
+        "ProvinceJC": "NX",
+        "cities": [
+            {
+                "Id": 310,
+                "CityCode": 640100,
+                "CityName": "银川市",
+                "ProvinceId": 30,
+                "CityJC": "YCS"
+            },
+            {
+                "Id": 311,
+                "CityCode": 640200,
+                "CityName": "石嘴山市",
+                "ProvinceId": 30,
+                "CityJC": "SZSS"
+            },
+            {
+                "Id": 312,
+                "CityCode": 640300,
+                "CityName": "吴忠市",
+                "ProvinceId": 30,
+                "CityJC": "WZS"
+            },
+            {
+                "Id": 313,
+                "CityCode": 640400,
+                "CityName": "固原市",
+                "ProvinceId": 30,
+                "CityJC": "GYS"
+            },
+            {
+                "Id": 314,
+                "CityCode": 640500,
+                "CityName": "中卫市",
+                "ProvinceId": 30,
+                "CityJC": "ZWS"
+            }
+        ]
+    },
+    {
+        "Id": 31,
+        "ProvinceCode": 650000,
+        "ProvinceName": "新疆",
+        "ProvinceJC": "XJ",
+        "cities": [
+            {
+                "Id": 315,
+                "CityCode": 650100,
+                "CityName": "乌鲁木齐市",
+                "ProvinceId": 31,
+                "CityJC": "WLMQS"
+            },
+            {
+                "Id": 316,
+                "CityCode": 650200,
+                "CityName": "克拉玛依市",
+                "ProvinceId": 31,
+                "CityJC": "KLMYS"
+            },
+            {
+                "Id": 317,
+                "CityCode": 652100,
+                "CityName": "吐鲁番市",
+                "ProvinceId": 31,
+                "CityJC": "TLFDQ"
+            },
+            {
+                "Id": 318,
+                "CityCode": 652200,
+                "CityName": "哈密市",
+                "ProvinceId": 31,
+                "CityJC": "HMDQ"
+            },
+            {
+                "Id": 319,
+                "CityCode": 652300,
+                "CityName": "昌吉回族自治州",
+                "ProvinceId": 31,
+                "CityJC": "CJHZZZZ"
+            },
+            {
+                "Id": 320,
+                "CityCode": 652700,
+                "CityName": "博尔塔拉蒙古自治州",
+                "ProvinceId": 31,
+                "CityJC": "BETLMGZZZ"
+            },
+            {
+                "Id": 321,
+                "CityCode": 652800,
+                "CityName": "巴音郭楞蒙古自治州",
+                "ProvinceId": 31,
+                "CityJC": "BYGLMGZZZ"
+            },
+            {
+                "Id": 322,
+                "CityCode": 652900,
+                "CityName": "阿克苏地区",
+                "ProvinceId": 31,
+                "CityJC": "AKSDQ"
+            },
+            {
+                "Id": 323,
+                "CityCode": 653000,
+                "CityName": "克孜勒苏柯尔克孜自治州",
+                "ProvinceId": 31,
+                "CityJC": "KZLSKEKZZZ"
+            },
+            {
+                "Id": 324,
+                "CityCode": 653100,
+                "CityName": "喀什地区",
+                "ProvinceId": 31,
+                "CityJC": "KSDQ"
+            },
+            {
+                "Id": 325,
+                "CityCode": 653200,
+                "CityName": "和田地区",
+                "ProvinceId": 31,
+                "CityJC": "HTDQ"
+            },
+            {
+                "Id": 326,
+                "CityCode": 654000,
+                "CityName": " 伊犁哈萨克自治州",
+                "ProvinceId": 31,
+                "CityJC": "YLHSKZZZ"
+            },
+            {
+                "Id": 327,
+                "CityCode": 654200,
+                "CityName": "塔城地区",
+                "ProvinceId": 31,
+                "CityJC": "TCDQ"
+            },
+            {
+                "Id": 328,
+                "CityCode": 654300,
+                "CityName": "阿勒泰地区",
+                "ProvinceId": 31,
+                "CityJC": "ALTDQ"
+            },
+            {
+                "Id": 377,
+                "CityCode": 659001,
+                "CityName": "石河子市",
+                "ProvinceId": 31,
+                "CityJC": "SHZS"
+            },
+            {
+                "Id": 378,
+                "CityCode": 659004,
+                "CityName": "五家渠市",
+                "ProvinceId": 31,
+                "CityJC": "WJQS"
+            }
+        ]
+    },
+    {
+        "Id": 32,
+        "ProvinceCode": 710000,
+        "ProvinceName": "台湾",
+        "ProvinceJC": "TW",
+        "cities": []
+    },
+    {
+        "Id": 33,
+        "ProvinceCode": 810000,
+        "ProvinceName": "香港",
+        "ProvinceJC": "XG",
+        "cities": []
+    },
+    {
+        "Id": 34,
+        "ProvinceCode": 820000,
+        "ProvinceName": "澳门",
+        "ProvinceJC": "AM",
+        "cities": []
+    }
+]
