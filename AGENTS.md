@@ -18,9 +18,9 @@ script/                  # Python 数据管线（爬蛇 + 分析；src/ 预留�
     getAQI.py            #     城市近 14 日 AQI：爬取入库 & 读库
   analysis/              # 数据分析与预测
     data_loader.py       #     pandas 读库（load_aqi_df / load_cities_df）
-    analysis.py          #     统计与聚合（描述统计/排名/等级/趋势/省份汇总/相关矩阵）
+    analysis.py          #     统计与聚合（描述统计/排名/等级/趋势/省份汇总/相关矩阵/area_average/area_daily_aqi）
     predict.py           #     最小二乘预测明日 AQI + 95% 区间（14 点线性外推）
-    main.py              #     全量统计+全城预测
+    main.py              #     全量统计+全城预测+省/全国均值与明日预测
   tests/                 # pytest 单元测试（test_data_loader / test_analysis / test_predict）
   main.py                # 命令行入口：python script/main.py
 src/                     # 预留：将来 Next.js 前端（app/components/lib/types/validations）
@@ -43,6 +43,8 @@ C:\...\python.exe -m pytest script/tests/ -v                                    
 ```
 
 预测说明：`predict_next_aqi` 对单城 AQI 序列做最小二乘线性外推，预测下一天并给 95% 预测区间（基于残差标准误与 t 分布）。仅反映短期趋势，无气象因子，误差较大；`results/predictions.json` 键为 CityCode（前端直接查）。
+
+省/全国均值口径：`area_average`（省均值）/`area_daily_aqi`（省或全国每日序列）均为**城市等权**——先每城取均值再对城市平均，避免城市数差异造成的加权偏差。`results/area_averages.json`：`national` + `provinces{省名}`，各含 7 项指标均值、`city_count` 与 `next_predicted/next_lower95/next_upper95/next_r2`（区域内 AQI 日均序列的最小二乘明日预测）。
 
 路径以 `__file__` 推导（`script/../prisma/weather.db`），从任意工作目录运行均可。
 

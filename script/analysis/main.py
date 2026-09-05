@@ -17,7 +17,7 @@ import pandas as pd
 from analysis.data_loader import load_aqi_df, load_cities_df
 from analysis.analysis import (descriptive_summary, city_aqi_ranking,
                                quality_distribution, daily_trend, province_summary,
-                               correlation_matrix)
+                               correlation_matrix, area_average, area_daily_aqi)
 from analysis.predict import predict_next_aqi
 
 RESULTS = Path(__file__).resolve().parents[2] / "results"
@@ -45,13 +45,58 @@ def _save_csvs(df, predictions):
     pd.DataFrame(predictions).T.to_csv(RESULTS / 'predictions.csv')
 
 
+def _area_rows(df):
+    """省/全国：7 项指标平均（城市等权）+ 明日 AQI 预测，逐行组装"""
+    def _build(name):
+        src = df if name is None else df[df['ProvinceName'] == name]
+        rec = {'ProvinceName': '全国'} if name is None else {'ProvinceName': name}
+        rec['city_count'] = int(src['CityName'].nunique())
+        rec.update({k: float(v) for k, v in area_average(df, name).items()})
+        daily = area_daily_aqi(df, name)
+        if len(daily) >= 5:
+            pred = predict_next_aqi(daily['AQI'])
+            rec.update({'next_day': str(daily['DateTime'].max()),
+                        'next_predicted': pred['predicted'],
+                        'next_lower95': pred['lower95'],
+                        'next_upper95': pred['upper95'],
+                        'next_r2': pred['r2']})
+        return rec
+
+    prov_names = sorted(df['ProvinceName'].drop_duplicates().tolist())
+    return [_build(None)] + [_build(n) for n in prov_names]
+
+
+def _write_area_averages(df):
+    rows = _area_rows(df)
+    pd.DataFrame(rows).to_csv(RESULTS / 'area_averages.csv', index=False)
+    provinces = {r['ProvinceName']: {k: v for k, v in r.items() if k != 'ProvinceName'}
+                 for r in rows[1:]}
+    with open(RESULTS / 'area_averages.json', 'w', encoding='utf-8') as f:
+        json.dump({'national': rows[0], 'provinces': provinces},
+                  f, ensure_ascii=False, indent=2)
+
+
 def _plot(df):
     fig, axes = plt.subplots(2, 2, figsize=(13, 9))
-    # 全国每日趋势
-    tr = daily_trend(df)
-    axes[0, 0].plot(tr['DateTime'], tr['AQI_mean'], marker='o')
-    axes[0, 0].set_title('全国每日 AQI 均值')
-    axes[0, 0].tick_params(axis='x', rotation=45)
+    # 全国每日 AQI（城市等权）趋势 + 明日预测
+    nd = area_daily_aqi(df)
+    xs = list(range(len(nd)))
+    ax0 = axes[0, 0]
+    ax0.plot(xs, nd['AQI'], marker='o', label='全国日均 AQI（城市等权）')
+    labels = list(nd['DateTime'])
+    if len(nd) >= 5:
+        pred = predict_next_aqi(nd['AQI'])
+        ax0.plot([xs[-1], len(nd)], [nd['AQI'].iloc[-1], pred['predicted']],
+                 'r--', label='明日预测')
+        ax0.errorbar([len(nd)], [pred['predicted']],
+                     yerr=[[pred['predicted'] - pred['lower95']],
+                           [pred['upper95'] - pred['predicted']]],
+                     fmt='o', color='r', capsize=4)
+        labels += ['明日(预测)']
+    ax0.set_xticks(range(len(labels)), labels)
+    ax0.tick_params(axis='x', rotation=45)
+    ax0.set_title('全国每日 AQI 趋势与明日预测')
+    ax0.legend(fontsize=8)
     # 城市排名 Top10
     top = city_aqi_ranking(df)
     axes[0, 1].barh(top['CityName'][::-1], top['AQI_mean'][::-1], color='orange')
@@ -108,6 +153,7 @@ def run():
 
     RESULTS.mkdir(exist_ok=True)
     _save_csvs(df, predictions)
+    _write_area_averages(df)
     _plot(df)
 
     with open(RESULTS / 'summary.json', 'w', encoding='utf-8') as f:

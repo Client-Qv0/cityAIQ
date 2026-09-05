@@ -62,3 +62,34 @@ def correlation_matrix(df):
     corr.index = [CN_KEYS[c] for c in corr.index]
     corr.columns = [CN_KEYS[c] for c in corr.columns]
     return corr
+
+
+def area_average(df, province_name=None):
+    """某省（province_name）或全国（None）的 7 项指标平均（城市等权）
+
+    计算口径：先求每座城市全部日子的指标均值，再对城市求平均——
+    避免城市数量不同的省份/地区被样本数加权。7 项指标索引为 CN_KEYS。
+    """
+    if province_name is not None:
+        df = df[df['ProvinceName'] == province_name]
+    if df.empty:
+        raise ValueError(f'未找到省份: {province_name}')
+    city_mean = df.groupby('CityName')[METRIC_COLS].mean()
+    out = city_mean.mean()
+    out.index = [CN_KEYS[c] for c in out.index]
+    return out
+
+
+def area_daily_aqi(df, province_name=None):
+    """某省/全国每日区域平均 AQI（城市等权），用于时间序列与明日预测
+
+    每日本区域内：先城市日均，再对城市求平均，保证与 area_average 同口径。
+    返回 DataFrame[DateTime, AQI]（DateTime 升序）。
+    """
+    if province_name is not None:
+        df = df[df['ProvinceName'] == province_name]
+    if df.empty:
+        raise ValueError(f'未找到省份: {province_name}')
+    daily = (df.groupby(['DateTime', 'CityName'])['AQI'].mean()
+             .groupby('DateTime').mean())
+    return daily.rename('AQI').reset_index().sort_values('DateTime')
