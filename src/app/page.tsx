@@ -31,23 +31,23 @@ export default function HomePage() {
         />
       </div>
 
-      {/* 地图 + 饼图 + 趋势 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* 大地图（上方，全宽） */}
+      <div className="rounded-xl border border-slate-200 bg-white p-4">
+        <ChinaMap data={d.province_rank} />
+      </div>
+
+      {/* 下方：饼图 + 折线图并排 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="rounded-xl border border-slate-200 bg-white p-4">
-          <ChinaMap data={d.province_rank} />
+          <QualityPie data={d.quality} />
         </div>
-        <div className="flex flex-col gap-4">
-          <div className="rounded-xl border border-slate-200 bg-white p-4">
-            <QualityPie data={d.quality} />
-          </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-4">
-            <TrendChart
-              daily={d.daily.map((x) => ({ date: x.date, value: x.AQI }))}
-              predict={{ predicted: d.avg.next_predicted, lower95: d.avg.next_lower95, upper95: d.avg.next_upper95 }}
-              title="全国每日 AQI（城市等权）"
-              lineColor={colorOf(aqi)}
-            />
-          </div>
+        <div className="rounded-xl border border-slate-200 bg-white p-4">
+          <TrendChart
+            daily={d.daily.map((x) => ({ date: x.date, value: x.AQI }))}
+            predict={{ predicted: d.avg.next_predicted, lower95: d.avg.next_lower95, upper95: d.avg.next_upper95 }}
+            title="全国每日 AQI（城市等权）"
+            lineColor={colorOf(aqi)}
+          />
         </div>
       </div>
 

@@ -145,8 +145,7 @@ function nationAvgKeys(nationalAvg: Record<MetricKey, number> | Record<string, u
   return o;
 }
 
-export function qCity(cityCode: number, key: MetricKey): CityData {
-  const col = METRIC_COLUMN[key];
+export function qCity(cityCode: number, key: MetricKey): CityData {  const col = METRIC_COLUMN[key];
   const rows = db
     .prepare(
       `SELECT DateTime, "${col}" AS value, AQI, Quality, PrimaryPollutant
@@ -219,4 +218,46 @@ export function qCity(cityCode: number, key: MetricKey): CityData {
       primary_pollutant: primary,
     },
   };
+}
+
+// ---------- 侧边栏导航树 ----------
+
+export interface NavCity {
+  CityCode: number;
+  CityName: string;
+  CityJC: string;
+}
+export interface NavProvince {
+  ProvinceJC: string;
+  ProvinceName: string;
+  cities: NavCity[];
+}
+
+/** 导航树：省份 → 城市（仅含有 AQI 数据的城市，避免死链） */
+export function qNavTree(): NavProvince[] {
+  const rows = db
+    .prepare(
+      `SELECT p.ProvinceJC, p.ProvinceName, c.CityCode, c.CityName, c.CityJC
+       FROM provinces p
+       JOIN cities c ON c.ProvinceId = p.Id
+       WHERE EXISTS (SELECT 1 FROM city_day_aqi a WHERE a.CityCode = c.CityCode)
+       ORDER BY p.ProvinceCode, c.CityCode`
+    )
+    .all() as {
+    ProvinceJC: string;
+    ProvinceName: string;
+    CityCode: number;
+    CityName: string;
+    CityJC: string;
+  }[];
+  const map = new Map<string, NavProvince>();
+  for (const r of rows) {
+    let p = map.get(r.ProvinceJC);
+    if (!p) {
+      p = { ProvinceJC: r.ProvinceJC, ProvinceName: r.ProvinceName, cities: [] };
+      map.set(r.ProvinceJC, p);
+    }
+    p.cities.push({ CityCode: r.CityCode, CityName: r.CityName, CityJC: r.CityJC });
+  }
+  return [...map.values()];
 }

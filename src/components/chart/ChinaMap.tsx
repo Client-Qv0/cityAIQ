@@ -62,7 +62,6 @@ export function ChinaMap({ data }: { data: ProvinceRankItem[] }) {
         type: "map",
         map: "china",
         roam: false,
-        zoom: 1.5,
         label: { show: false },
         emphasis: { label: { show: true, fontSize: 11 } },
         itemStyle: { borderColor: "#cbd5e1" },
@@ -74,7 +73,7 @@ export function ChinaMap({ data }: { data: ProvinceRankItem[] }) {
   return (
     <EChart
       option={option}
-      height={430}
+      height={500}
       onEvents={{
         click: (p: unknown) => {
           const jc = (p as { data?: { jc?: string } })?.data?.jc;
