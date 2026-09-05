@@ -11,13 +11,23 @@
 
 ```
 prisma/weather.db        # SQLite 数据库（3 张表），数据全量约 4700 行
-script/                  # 数据爬取与清洗模块
-  db.py                  #   DB_PATH、三表 DDL（SCHEMA）、get_conn()
-  getdata.py             #   省份 + 地市级：爬取入库 & 读库
-  getAIQ.py              #   城市近 14 日 AQI：爬取入库 & 读库
+script/                  # Python 数据管线（爬蛇 + 分析；src/ 预留给前端 Next.js）
+  db.py                  #   共享层：DB_PATH、三表 DDL（SCHEMA）、get_conn()
+  req/                   # 数据爬取与清洗
+    getdata.py           #     省份 + 地市级：爬取入库 & 读库
+    getAQI.py            #     城市近 14 日 AQI：爬取入库 & 读库
+  analysis/              # 数据分析与预测
+    data_loader.py       #     pandas 读库（load_aqi_df / load_cities_df）
+    analysis.py          #     统计与聚合（描述统计/排名/等级/趋势/省份汇总/相关矩阵）
+    predict.py           #     最小二乘预测明日 AQI + 95% 区间（14 点线性外推）
+    main.py              #     全量统计+全城预测
+  tests/                 # pytest 单元测试（test_data_loader / test_analysis / test_predict）
+  main.py                # 命令行入口：python script/main.py
+src/                     # 预留：将来 Next.js 前端（app/components/lib/types/validations）
+results/                 # 分析产物：CSV/PNG/JSON（前端数据接口）
+plan.md                  # 分析+预测功能开发计划
 city.json                # 接口返回格式样例，仅作字段参考（代码不读取）
 city_day_AQI.json        # 同上
-main.py                  # 空占位，后续分析与可视化代码从这里或 src 新模块开始
 文档.docx                # 课程材料（已被 .gitignore 忽略）
 ```
 
@@ -25,10 +35,14 @@ main.py                  # 空占位，后续分析与可视化代码从这里�
 
 ```bash
 # Python 一律用绝对路径或 py，勿裸用 python 关键字
-C:\Users\ASUS\AppData\Local\Programs\Python\Python313\python.exe script/getdata.py   # 刷新省份+城市，约 2 分钟
-C:\...\python.exe script/getAIQ.py                                                   # 全量刷新 AQI，15~20 分钟，可中断续跑
-# 依赖：requests（pip install requests）
+C:\Users\ASUS\AppData\Local\Programs\Python\Python313\python.exe script/req/getdata.py  # 刷新省份+城市，约 2 分钟
+C:\...\python.exe script/req/getAQI.py                                                    # 全量刷新 AQI，15~20 分钟，可中断续跑
+C:\...\python.exe script/main.py                                                          # 全量分析+预测，覆盖写出 results/
+C:\...\python.exe -m pytest script/tests/ -v                                              # 运行全部测试（12 条）
+# 依赖：requests（爬虫）；numpy/pandas/matplotlib（分析，见 requirements.txt）
 ```
+
+预测说明：`predict_next_aqi` 对单城 AQI 序列做最小二乘线性外推，预测下一天并给 95% 预测区间（基于残差标准误与 t 分布）。仅反映短期趋势，无气象因子，误差较大；`results/predictions.json` 键为 CityCode（前端直接查）。
 
 路径以 `__file__` 推导（`script/../prisma/weather.db`），从任意工作目录运行均可。
 
