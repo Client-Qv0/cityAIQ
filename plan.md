@@ -659,3 +659,379 @@ C:\...\python.exe -m pytest tests/ -v                                       # �
 C:\Users\ASUS\AppData\Local\Programs\Python\Python313\python.exe -m pytest tests/ -v
 ```
 预期：PASS 共 12 条
+
+---
+
+# 阶段二：前端界面实现计划
+
+> 数据源：所有数据经 Next.js API Route + better-sqlite3 直读 `prisma/weather.db`（与 Python 分析同库同口径）；
+> 路由：`/`（全国）、`/[ProvinceJC]`（省）、`/[ProvinceJC]/[CityCode]`（城市，CityCode 为国标 6 位唯一编码，无歧义）。
+> 全程不执行任何 git 操作（用户红线）。
+
+**目标：** 三页可视化前端：全国概览（中国地图 + 区域均值/预测）、省份页（省内城市列表 + 省均值/预测）、城市页（14 日时序 + 明日预测点），外观对齐国标 HJ 633 六色图例。
+
+**架构：** 根目录为 Next.js 项目（`src/app` App Router，对齐 mini-mall 范式）；Python 全部在 `script/`（已完成，不动）。前端只读库：`better-sqlite3` 直连 weather.db，SQL 聚合口径与 Python 一致（城市等权：先城市日均再城市间平均），预测算法复刻 `script/analysis/predict.py` 的最小二乘公式（`src/lib/predict.ts`，两端口径一致）。
+
+**技术栈：**
+
+| 技术 | 版本 | 用途 |
+|---|---|---|
+| Next.js | 16.x | App Router（路由 + Route Handlers） |
+| React | 19.x | UI |
+| TypeScript | ^5 | strict mode，禁止 any |
+| TailwindCSS | ^4 | 样式 |
+| Zod | ^4 | 请求参数校验 |
+| ECharts + echarts-for-react | 5.x / 3.0.x | 地图、折线、饼图 |
+| better-sqlite3 | 12.x | 直读 SQLite |
+| vitest | ^2 | 单测 |
+
+**约定：**
+- API 返回格式：`{ data, error, message }`；公开只读，无鉴权
+- 等权口径与 Python 严格一致：区域均值 = 城市 14 日均值 → 城市间平均
+- AQI 等级色板（HJ 633）：`src/lib/aqiColors.ts`
+- 中国地图 GeoJSON：`public/geo/china.json`（阿里 DataV `100000_full.json`，本地存档，不依赖线上）
+- 手写组件与样式，不引入 UI/状态库
+
+---
+
+## 目录结构
+
+```
+src/
+  app/
+    page.tsx                          # / 全国概览
+    [ProvinceJC]/page.tsx             # /[ProvinceJC] 省页
+    [ProvinceJC]/[CityCode]/page.tsx  # /[ProvinceJC]/[CityCode] 城市页
+    api/
+      national/route.ts               # GET 全国：均值+预测+每日序列+等级+省排名
+      province/[provinceJC]/route.ts  # GET 某省：省均值+预测+省内城市+每日序列
+      city/[cityCode]/route.ts        # GET 某城：14 日序列+预测+基本信息；支持 ?key= 切换指标
+    layout.tsx  globals.css
+  components/
+    chart/EChart.tsx                  # 'use client' 通用 ECharts 包装
+    chart/ChinaMap.tsx                # 中国地图着色（省均值色阶）+ 点击跳转
+    chart/TrendChart.tsx              # 折线（14 日 + 明日预测点虚线/区间）
+    chart/QualityPie.tsx              # 等级分布饼图
+    ui/StatCard.tsx  ui/Table.tsx  ui/Badge.tsx  ui/Breadcrumb.tsx
+  lib/
+    db.ts                             # better-sqlite3 单例（prisma/weather.db 只读）
+    queries.ts                        # 全部 SQL（national/province/city）
+    predict.ts                        # 最小二乘预测（复刻 Python 版）
+    aqiColors.ts                      # HJ633 色板、qualityOf()/colorOf()
+    jc.ts                             # ProvinceJC<->ProvinceId、CityCode 解析与归属校验
+    utils.ts                          # cn()、数字格式化
+  types/index.ts
+  validations/index.ts                # zod schema（cityCode/provinceJC）
+public/geo/china.json                 # 中国省界 GeoJSON（DataV）
+tests/                                # vitest：predict / jc / queries
+```
+
+Node 依赖：next/react/ts/tailwind4/zod/echarts/echarts-for-react/better-sqlite3/vitest。
+`next.config.ts`：`transpilePackages: ['echarts', 'zrender']`。
+
+---
+
+## API 契约
+
+**GET /api/national**
+```json
+{ "data": { "stats": {"AQI": {"mean": 51.7, "max": 179}},
+            "avg": {"AQI": 51.7, "PM2.5": 13.7, "next_predicted": 59.1,
+                    "next_lower95": 47.4, "next_upper95": 70.7, "next_r2": 0.46},
+            "daily": [{"date": "2026-08-21", "AQI": 62.1}],
+            "quality": [{"Quality": "优", "count": 2818}],
+            "province_rank": [{"ProvinceName": "河南", "AQI_mean": 78.2}] } }
+```
+
+**GET /api/province/[provinceJC]**
+```json
+{ "data": { "province": {"ProvinceName": "浙江", "ProvinceJC": "ZJ", "city_count": 11},
+            "avg": {"AQI": 58.2, "next_predicted": 61.1, "…": 0},
+            "cities": [{"CityCode": 330100, "CityName": "杭州市", "AQI_mean": 58,
+                        "next_predicted": 62, "good_days": 12}],
+            "daily": [{"date": "2026-08-21", "AQI": 55.2}] } }
+```
+
+**GET /api/city/[cityCode]（`?key=` 切换指标，缺省 AQI；key ∈ AQI/SO2/CO/NO2/O3_8h/PM10/PM2.5，白名单校验防注入）**
+```json
+{ "data": { "city": {"CityCode": 330100, "CityName": "杭州市", "ProvinceName": "浙江", "CityJC": "HZS"},
+            "key": "AQI", "unit": "",
+            "daily": [{"date": "2026-08-21", "value": 56, "Quality": "优", "SO2_24h": 6.1, "CO_24h": 0.5, "NO2_24h": 21.3,
+                       "O3_8h_24h": 74.2, "PM10_24h": 31.2, "PM2_5_24h": 15.4}],
+            "predict": {"predicted": 51.4, "lower95": 2.1, "upper95": 100.6,
+                        "r2": 0.05, "slope": -1.02, "n_points": 14},
+            "summary": {"AQI_mean": 59, "good_days": 11, "primary_pollutant": "O3_8h"} } }
+```
+
+**城市页指标切换语义**：`/ZJ/330100` → AQI 14+1 折线；`/ZJ/330100?key=PM2.5` → PM2.5 14+1 折线（该指标同样做最小二乘预测）；`daily[].value` 与 `predict` 均针对所选 key。UI 提供 7 个指标的切换器（AQI/SO2/CO/NO2/O3_8h/PM10/PM2.5），URL query 同步。
+
+---
+
+## 任务 1：前端工程骨架（手写初始化，避免 create-next-app 非空目录冲突）
+
+**文件：**
+- 创建：`package.json`、`tsconfig.json`、`next.config.ts`、`postcss.config.mjs`、`src/app/globals.css`、`src/app/layout.tsx`
+
+- [ ] **步骤 1：package.json**
+
+```json
+{
+  "name": "city-aqi-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": { "dev": "next dev", "build": "next build", "start": "next start",
+               "lint": "next lint", "test": "vitest run" },
+  "dependencies": {
+    "better-sqlite3": "^12.0.0", "echarts": "^5.6.0", "echarts-for-react": "^3.0.6",
+    "next": "^16.2.11", "react": "^19.2.4", "react-dom": "^19.2.4", "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4", "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^20", "@types/react": "^19", "@types/react-dom": "^19",
+    "tailwindcss": "^4", "typescript": "^5", "vitest": "^2.1.0"
+  }
+}
+```
+
+- [ ] **步骤 2：npm install**
+
+运行：`npm install`
+预期：无 peer 冲突；`node -e "console.log(Object.keys(require('better-sqlite3')))"` 打印数组（native 二进制 OK）。
+
+- [ ] **步骤 3：next.config.ts**
+
+```ts
+import type { NextConfig } from "next"
+const nextConfig: NextConfig = { transpilePackages: ["echarts", "zrender"] }
+export default nextConfig
+```
+
+- [ ] **步骤 4：tsconfig.json（exclude script/results，paths @/*）**
+
+```json
+{ "compilerOptions": { "target": "ES2022", "lib": ["dom", "dom.iterable", "esnext"],
+  "strict": true, "noEmit": true, "esModuleInterop": true, "module": "esnext",
+  "moduleResolution": "bundler", "resolveJsonModule": true, "isolatedModules": true,
+  "jsx": "preserve", "incremental": true, "plugins": [{ "name": "next" }],
+  "paths": { "@/*": ["./src/*"] } },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "script", "results"] }
+```
+
+- [ ] **步骤 5：globals.css + layout.tsx**
+
+`globals.css`：`@import "tailwindcss";`
+`layout.tsx`：lang=zh-CN，顶部导航"城市空气质量实时可视化"，面包屑容器。
+
+- [ ] **步骤 6：dev server 起跳**
+
+运行：`npm run dev` → http://localhost:3000 显示占位布局。
+
+---
+
+## 任务 2：数据层 lib（db/queries/predict/jc/aqiColors/types/validations）
+
+**文件：**
+- 创建：`src/lib/db.ts`、`queries.ts`、`predict.ts`、`aqiColors.ts`、`jc.ts`、`utils.ts`、`src/types/index.ts`、`src/validations/index.ts`
+- 测试：`tests/predict.test.ts`、`tests/jc.test.ts`、`tests/queries.test.ts`
+
+- [ ] **步骤 1：db.ts（单例只读，约定从项目根运行）**
+
+```ts
+import Database from "better-sqlite3"
+export const db = new Database(process.cwd() + "/prisma/weather.db", { readonly: true })
+```
+
+- [ ] **步骤 2：queries.ts 关键 SQL（城市等权与 Python 同口径）**
+
+```ts
+// 区域等权均值 = 每城 AQI 日均 → 城市间平均
+const AVG_EQUAL_WEIGHT = `
+  SELECT AVG(city_avg) FROM (SELECT CityCode, AVG(AQI) AS city_avg FROM city_day_aqi GROUP BY CityCode)`
+export function qNational() { /* stats: SELECT AVG()/MAX() 7 指标；avg: 等权 7 指标 + predict(daily 序列);
+    daily: SELECT DateTime, AVG(cityAvg) 按日等权; quality: 等级计数; province_rank: JOIN provinces 等权均值 */
+}
+export function qProvince(provinceId: number) { /* 省信息、等权均值+预测、各城均值/good_days、省每日序列 */ }
+export function qCity(cityCode: number) { /* 14 日全字段 + 城市基础信息 */ }
+```
+
+- [ ] **步骤 3：predict.ts（与 Python 完全同公式）**
+
+```ts
+const T_VALUE: Record<number, number> = {
+  5: 2.571, 6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228, 11: 2.201, 12: 2.179,
+}
+export function predictNext(ys: number[]): {
+  predicted: number; lower95: number; upper95: number
+  slope: number; intercept: number; r2: number; n_points: number
+}
+// 最小二乘 y = a + b·t，t = 0..n-1，预测 t = n；区间 pred ± t(0.975, n-2)·s·sqrt(1 + 1/n + (tn−t̄)²/Sxx)
+```
+
+测试用例（与 Python 版同值）：`[10,13,...,49]`（n=14）→ predicted=52、r2≈1。
+
+- [ ] **步骤 4：jc.ts（URL 段 → 库标识 + 归属校验）**
+
+`parseProvinceJC(jc)` → `{ provinceId, name } | null`（`SELECT ... WHERE ProvinceJC=?`）；
+`parseCityRoute(provinceJC, cityCode)` → `{ cityCode, name } | null`（CityCode 唯一；校验 `ProvinceId` 归属 JC，错配返回 null 触发 404）。
+
+- [ ] **步骤 5：aqiColors.ts（HJ 633 六色 + 判定）**
+
+```ts
+export const QualityLevels = ["优", "良", "轻度污染", "中度污染", "重度污染", "严重污染"]
+export const LevelColors = ["#00e400", "#f6ec20", "#ff7e00", "#ff0000", "#8f083a", "#7e0023"]
+export function qualityOf(aqi: number): string
+export function colorOf(aqi: number): string
+```
+
+- [ ] **步骤 6：types + validations**
+
+```ts
+// types/index.ts
+export interface CityDailyRow { date: string; value: number; Quality?: string }
+export interface PredictResult { predicted: number; lower95: number; upper95: number;
+  r2: number; slope: number; n_points: number }
+// validations/index.ts
+const cityCodeSchema = z.coerce.number().int().min(100000).max(999999)
+const provinceJCSchema = z.string().min(2).max(4).regex(/^[A-Z]+$/)   // BJ/NMG 等
+// 指标白名单：key 一律经映射表转列名，禁止直接拼 SQL（防注入）
+export const METRIC_KEYS = ["AQI", "SO2", "CO", "NO2", "O3_8h", "PM10", "PM2.5"] as const
+export const METRIC_COLUMN: Record<string, string> = {
+  AQI: "AQI", SO2: "SO2_24h", CO: "CO_24h", NO2: "NO2_24h",
+  O3_8h: "O3_8h_24h", PM10: "PM10_24h", PM2_5: "PM2_5_24h",
+}
+export const METRIC_UNIT: Record<string, string> = {
+  AQI: "", SO2: "μg/m³", CO: "mg/m³", NO2: "μg/m³", O3_8h: "μg/m³", PM10: "μg/m³", PM2_5: "μg/m³",
+}
+const metricKeySchema = z.enum(METRIC_KEYS).default("AQI")
+```
+
+- [ ] **步骤 7：vitest 全绿**
+
+运行：`npm test` → predict（4 用例）/ jc（2 用例）/ queries（真实库集成，3 用例）PASS。
+
+---
+
+## 任务 3：API Route Handlers
+
+**文件：**
+- 创建：`src/app/api/national/route.ts`、`src/app/api/province/[provinceJC]/route.ts`、`src/app/api/city/[cityCode]/route.ts`
+
+- [ ] **步骤 1：实现三个 GET（zod 校验 + {data,error,message} + 404 处理）**
+
+```ts
+// api/city/[cityCode]/route.ts 结构
+const keySchema = z.enum(["AQI", "SO2", "CO", "NO2", "O3_8h", "PM10", "PM2.5"]).default("AQI")
+export async function GET(req: Request, ctx: { params: Promise<{ cityCode: string }> }) {
+  const { cityCode } = await ctx.params
+  const key = keySchema.parse(new URL(req.url).searchParams.get("key"))
+  try {
+    const parsed = cityCodeSchema.safeParse(cityCode)
+    if (!parsed.success) return Response.json(
+      { data: null, error: "invalid_cityCode", message: "城市编码非法" }, { status: 400 })
+    return Response.json({ data: await loadCityData(parsed.data, key), error: null, message: null })
+  } catch {
+    return Response.json(
+      { data: null, error: "not_found", message: "未找到该城市数据" }, { status: 404 })
+  }
+}
+```
+
+`loadCityData(cityCode, key)`：daily 取所选 key 的序列（`value` 字段；key=AQI 时附带 Quality），`predict` = `predictNext(values)`（6 浓度同样拟合+区间）。
+
+- [ ] **步骤 2：curl 验证**
+
+```bash
+curl http://localhost:3000/api/national
+curl http://localhost:3000/api/province/ZJ
+curl http://localhost:3000/api/city/330100        # 杭州
+curl http://localhost:3000/api/city/999999        # 预期 404
+```
+
+---
+
+## 任务 4：图表与 UI 组件（ECharts 客户端封装）
+
+**文件：**
+- 创建：`src/components/chart/EChart.tsx`、`ChinaMap.tsx`、`TrendChart.tsx`、`QualityPie.tsx`、`src/components/ui/StatCard.tsx`、`ui/Table.tsx`、`ui/Badge.tsx`、`ui/Breadcrumb.tsx`
+
+- [ ] **步骤 1：EChart.tsx（'use client'）**
+
+```tsx
+"use client"
+import ReactECharts from "echarts-for-react"
+export function EChart({ option, height = 360 }: { option: object; height?: number }) {
+  return <ReactECharts option={option} notMerge style={{ height, width: "100%" }} />
+}
+```
+
+- [ ] **步骤 2：TrendChart（14 日时序 + 预测点）**
+
+series[0] 近 14 日实线（markLine at 0? 不需）；series[1] `[末日期, 预测日]` 虚线接预测值；区间用 `stack` 双 series 模拟误差带（lower~upper 透明填充）；tooltip 显示颜色等级。
+
+- [ ] **步骤 3：ChinaMap + GeoJSON**
+
+先下载（任务 6 若未完成也在）：`public/geo/china.json`；组件内 `echarts.registerMap("china", data)`（fetch 加载），series `{ type: "map", map: "china" }`，visualMap `min 0 max 150`，`#00e400→#7e0023` 六段（pieces 模式映射国标区间）；click 事件 `router.push("/" + provinceJC)`（provinceJC 从后端 rank 列表关联）。
+
+- [ ] **步骤 4：StatCard/Badge/Table/Breadcrumb**
+
+StatCard：指标名 + 值 + 单位 + 等级色；Badge：等级丸；Table：城市/省份排名表；Breadcrumb：首页 / 浙江 / 杭州。
+
+---
+
+## 任务 5：三个页面
+
+**文件：**
+- 创建：`src/app/page.tsx`、`src/app/[ProvinceJC]/page.tsx`、`src/app/[ProvinceJC]/[CityCode]/page.tsx`
+
+- [ ] **步骤 1：首页 `/`**
+
+KPI 行（全国 AQI 均值、明日预测、预测区间、数据日期）→ 左 ChinaMap（省均值着色，点击滚入省页）→ 右 QualityPie + TrendChart（每日等权序列含预测点）→ 底部省排名 Table。
+
+- [ ] **步骤 2：省页 `/[ProvinceJC]`**
+
+Breadcrumb（首页 / 浙江）→ KPI（省均值/明日预测/城市数）→ 城市表（城市名/AQI 均值/明日预测/良好天数，行点击 → `/[ProvinceJC]/[CityCode]`）→ 省 TrendChart → 省 vs 全国 7 指标对比条。
+
+- [ ] **步骤 3：城市页 `/[ProvinceJC]/[CityCode]`**
+
+Breadcrumb（首页 / 浙江 / 杭州）→ **指标切换器**（AQI/SO2/CO/NO2/O3_8h/PM10/PM2.5 七个 tab，默认 AQI，`?key=` 与 URL 同步；key=AQI 时有等级底色）→ 当前值大卡（等级色 + 首要污染物 + 明日预测与区间，区间为所选指标）→ TrendChart（所选指标 14 日 + 预测虚线/误差带，单位随 key 变化）→ 信息卡（CityCode/省属/JC）。
+
+- [ ] **步骤 4：404 处理**
+
+三页调用 `parseProvinceJC/parseCityRoute` 或 fetch API 失败均 `notFound()`；`not-found.tsx` 提供返回首页链接。
+
+---
+
+## 任务 6：GeoJSON + lint/build/验收
+
+**文件：**
+- 创建：`public/geo/china.json`
+
+- [ ] **步骤 1：下载省界 GeoJSON**
+
+```bash
+mkdir -p public/geo && curl -o public/geo/china.json https://geo.datav.aliyuncs.com/areas_v3/bound/100000_full.json
+```
+备选：`https://raw.githubusercontent.com/echarts-maps/echarts-china-cities-js/master/echarts-china-map.json`
+确认文件含 `"features"` 且 size ~2MB 内。
+
+- [ ] **步骤 2：质量门**
+
+运行：`npm run build` + `npx tsc --noEmit` + `npm test`
+预期：0 error；13 用例 PASS（simplified）。
+
+- [ ] **步骤 3：验收清单**
+
+- [ ] `/` 地图着色正常，点击省份能跳转
+- [ ] `/ZJ` 城市列表可跳转城市页
+- [ ] `/ZJ/330100` 时序 + 预测点展示；`/BJ/330100`（省城错配）404
+- [ ] `/ZJ/330100?key=PM2.5` 切换为 PM2.5 折线 + 该指标明日预测；key 非法值（如 `?key=foo` → 400 或回落 AQI）
+- [ ] 浓度指标同样带 95% 区间（14+1 天格式统一）
+- [ ] API 四组 curl（national/省份/城市/非法）全部符合契约
+- [ ] AQI 色板与国标一致（优绿、良黄、轻橙、中红、重紫、严重褐）
+
+---
+
+> **说明：** 阶段一`results/*.json` 保留作报告备料；前端一律经 API 直读数据库（实时更新靠 `script/req/getAQI.py` 刷新 + 页面刷新）。
+
+
