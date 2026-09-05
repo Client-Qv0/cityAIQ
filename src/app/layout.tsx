@@ -1,0 +1,31 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "城市空气质量数据可视化",
+  description: "基于中国环境监测总站数据的城市空气质量数据分析与可视化",
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="zh-CN">
+      <body>
+        <header className="bg-white border-b border-slate-200">
+          <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
+            <Link href="/" className="font-bold text-lg text-slate-900">
+              城市空气质量数据可视化
+            </Link>
+            <span className="text-sm text-slate-500">
+              数据源：中国环境监测总站 · 近 14 日滚动
+            </span>
+          </div>
+        </header>
+        <main className="mx-auto max-w-7xl px-4 py-6">{children}</main>
+        <footer className="mx-auto max-w-7xl px-4 py-6 text-center text-xs text-slate-400">
+          课程项目：城市天气质量的数据检测分析与可视化
+        </footer>
+      </body>
+    </html>
+  );
+}
