@@ -2,3 +2,6 @@
 __pycache__/
 prisma/weather.db
 答辩PPT大纲.md
+node_modules/
+.next/
+out/
