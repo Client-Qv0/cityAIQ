@@ -4,6 +4,7 @@ import { cityCodeSchema, metricKeySchema, METRIC_NAME, METRIC_UNIT, type MetricK
 import { qCity } from "@/lib/queries";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { MetricSwitcher } from "@/components/MetricSwitcher";
+import { PollutantCard } from "@/components/PollutantCard";
 import { TrendChart } from "@/components/chart/TrendChart";
 import { colorOf, qualityOf } from "@/lib/aqiColors";
 import { fmt } from "@/lib/utils";
@@ -18,12 +19,14 @@ const COLOR_TABLE: Record<MetricKey, string> = {
   "PM2.5": "#14b8a6",
 };
 
+const THRESHOLDS = ["50", "100", "150"];
+
 export default async function CityPage({
   params,
   searchParams,
 }: {
   params: Promise<{ provinceJC: string; cityCode: string }>;
-  searchParams: Promise<{ key?: string }>;
+  searchParams: Promise<{ key?: string; threshold?: string }>;
 }) {
   // Next 16.3.4 在 Windows 大写段名下：运行时键为大写，而生成类型为小写——两者兼容
   const p = (await params) as { ProvinceJC?: string; provinceJC?: string; CityCode?: string; cityCode?: string };
@@ -34,11 +37,13 @@ export default async function CityPage({
   const ref = parseCityRoute(provinceJC, parsedCode.data);
   if (!ref) notFound();
 
-  const { key } = await searchParams;
+  const sp = await searchParams;
+  const { key } = sp;
   const keyParsed = metricKeySchema.safeParse(key ?? undefined);
   const metric: MetricKey = keyParsed.success ? keyParsed.data : "AQI";
+  const threshold = THRESHOLDS.includes(sp.threshold ?? "") ? Number(sp.threshold) : 50;
 
-  const d = qCity(ref.cityCode, metric);
+  const d = qCity(ref.cityCode, metric, threshold);
   const lastValue = d.daily[d.daily.length - 1]?.value ?? 0;
   const levelColor = metric === "AQI" ? colorOf(lastValue) : COLOR_TABLE[metric];
   const quality = metric === "AQI" ? qualityOf(lastValue) : undefined;
@@ -106,6 +111,9 @@ export default async function CityPage({
           lineColor={levelColor}
         />
       </div>
+
+      {/* 主要污染物分析与建议 */}
+      <PollutantCard result={d.pollutant} />
 
       {/* 信息卡 */}
       <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600">

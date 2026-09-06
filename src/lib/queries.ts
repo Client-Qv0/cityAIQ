@@ -1,5 +1,6 @@
 import { db } from "./db";
 import { predictNext } from "./predict";
+import { analyzePollutant, type PollutantDay, type PollutantResult } from "./pollutant";
 import { METRIC_COLUMN, METRIC_KEYS, type MetricKey } from "@/validations";
 import type { NationalData, ProvinceData, CityData } from "@/types";
 
@@ -145,10 +146,12 @@ function nationAvgKeys(nationalAvg: Record<MetricKey, number> | Record<string, u
   return o;
 }
 
-export function qCity(cityCode: number, key: MetricKey): CityData {  const col = METRIC_COLUMN[key];
+export function qCity(cityCode: number, key: MetricKey, threshold = 50): CityData {
+  const col = METRIC_COLUMN[key];
   const rows = db
     .prepare(
-      `SELECT DateTime, "${col}" AS value, AQI, Quality, PrimaryPollutant
+      `SELECT DateTime, "${col}" AS value, AQI, Quality, PrimaryPollutant,
+              SO2_24h, CO_24h, NO2_24h, O3_8h_24h, PM10_24h, PM2_5_24h
        FROM city_day_aqi WHERE CityCode = ? ORDER BY DateTime`
     )
     .all(cityCode) as {
@@ -157,6 +160,12 @@ export function qCity(cityCode: number, key: MetricKey): CityData {  const col =
     AQI: number | null;
     Quality: string;
     PrimaryPollutant: string | null;
+    SO2_24h: number | null;
+    CO_24h: number | null;
+    NO2_24h: number | null;
+    O3_8h_24h: number | null;
+    PM10_24h: number | null;
+    PM2_5_24h: number | null;
   }[];
   if (rows.length === 0) throw new Error(`no data for city ${cityCode}`);
 
@@ -166,6 +175,19 @@ export function qCity(cityCode: number, key: MetricKey): CityData {  const col =
   const mean = values.reduce((a, b) => a + b, 0) / values.length;
   const max = Math.max(...values);
   const goodDays = rows.filter((r) => r.Quality === "优" || r.Quality === "良").length;
+
+  // 主要污染物双粒度分析（IAQI 主控因子法，与 Python pollutant_analysis 同口径）
+  const pollutantRows: PollutantDay[] = rows.map((r) => ({
+    date: r.DateTime.slice(0, 10),
+    SO2_24h: r.SO2_24h ?? NaN,
+    CO_24h: r.CO_24h ?? NaN,
+    NO2_24h: r.NO2_24h ?? NaN,
+    O3_8h_24h: r.O3_8h_24h ?? NaN,
+    PM10_24h: r.PM10_24h ?? NaN,
+    PM2_5_24h: r.PM2_5_24h ?? NaN,
+    AQI: r.AQI ?? NaN,
+  }));
+  const pollutant = analyzePollutant(pollutantRows, threshold);
 
   // 首要污染物：非空调格频次最高的
   const counts = new Map<string, number>();
@@ -217,6 +239,7 @@ export function qCity(cityCode: number, key: MetricKey): CityData {  const col =
       good_days: goodDays,
       primary_pollutant: primary,
     },
+    pollutant,
   };
 }
 

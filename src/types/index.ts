@@ -1,4 +1,5 @@
 import type { PredictResult } from "@/lib/predict";
+import type { PollutantResult } from "@/lib/pollutant";
 import type { MetricKey } from "@/validations";
 
 export interface NationalData {
@@ -48,4 +49,5 @@ export interface CityData {
     good_days: number;
     primary_pollutant: string | null;
   };
+  pollutant: PollutantResult;
 }

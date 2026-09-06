@@ -17,7 +17,8 @@ import pandas as pd
 from analysis.data_loader import load_aqi_df, load_cities_df
 from analysis.analysis import (descriptive_summary, city_aqi_ranking,
                                quality_distribution, daily_trend, province_summary,
-                               correlation_matrix, area_average, area_daily_aqi)
+                               correlation_matrix, area_average, area_daily_aqi,
+                               pollutant_analysis)
 from analysis.predict import predict_next_aqi
 
 RESULTS = Path(__file__).resolve().parents[2] / "results"
@@ -74,6 +75,24 @@ def _write_area_averages(df):
     with open(RESULTS / 'area_averages.json', 'w', encoding='utf-8') as f:
         json.dump({'national': rows[0], 'provinces': provinces},
                   f, ensure_ascii=False, indent=2)
+
+
+def _write_pollutants(df):
+    """主要污染物双粒度分析：day1 主控因子建议 + week7 频次参照"""
+    out = pollutant_analysis(df)
+    out.to_csv(RESULTS / 'pollutant_analysis.csv', index=False)
+    records = []
+    for r in out.to_dict('records'):
+        for k in ('day1_gov', 'day1_personal', 'week7'):
+            r[k] = json.loads(r[k])
+        r['good'] = bool(r['good'])
+        records.append({int(r['CityCode']): r})
+    payload = {}
+    for r in records:
+        payload.update(r)
+    with open(RESULTS / 'pollutant_analysis.json', 'w', encoding='utf-8') as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+    return len(payload)
 
 
 def _plot(df):
@@ -154,6 +173,7 @@ def run():
     RESULTS.mkdir(exist_ok=True)
     _save_csvs(df, predictions)
     _write_area_averages(df)
+    n_poll = _write_pollutants(df)
     _plot(df)
 
     with open(RESULTS / 'summary.json', 'w', encoding='utf-8') as f:

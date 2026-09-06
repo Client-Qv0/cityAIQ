@@ -93,3 +93,120 @@ def area_daily_aqi(df, province_name=None):
     daily = (df.groupby(['DateTime', 'CityName'])['AQI'].mean()
              .groupby('DateTime').mean())
     return daily.rename('AQI').reset_index().sort_values('DateTime')
+import json
+
+"""===== 主要污染物分析（HJ 633 IAQI 主控因子法 + 建议模板）====="""
+
+# 国标断点：IAQI 档（第 1 个列表）↔ 浓度档（第 2 个列表），24h / O3 8h
+_POLLUTANT_BREAKS = {
+    'SO2_24h': ([0, 50, 100, 150, 200, 300, 500], [0, 50, 150, 475, 800, 1600, 2620]),
+    'CO_24h':  ([0, 50, 100, 150, 200, 300, 500], [0, 2, 4, 14, 24, 36, 48]),
+    'NO2_24h': ([0, 50, 100, 150, 200, 300, 500], [0, 40, 80, 180, 280, 565, 750]),
+    'O3_8h_24h': ([0, 50, 100, 150, 200, 300], [0, 100, 160, 215, 265, 800]),
+    'PM10_24h': ([0, 50, 100, 150, 200, 300, 500], [0, 50, 150, 250, 350, 420, 500]),
+    'PM2_5_24h': ([0, 50, 100, 150, 200, 300, 500], [0, 35, 75, 115, 150, 250, 350]),
+}
+
+GOV_ACTIONS = {
+    'PM2.5': ['加强施工扬尘与道路扬尘管控', '开展机动车排放抽检与限行', '督导涉尘企业错峰生产'],
+    'PM10':  ['强化施工工地抑尘措施检查', '加大道路机械化清扫与洒水频次', '加强矿山及物料堆场覆盖管理'],
+    'O3_8h': ['推进 VOC 与 NOx 协同管控', '鼓励加油站错峰卸油与夜间作业', '强化沥青涂装等挥发性工序错时施工'],
+    'NO2':   ['优化交通组织并扩大公共交通运力', '严格柴油货车限行与排放检查', '加强机动车尾气遥感监测执法'],
+    'SO2':   ['督促燃煤设施稳定达标排放', '推进清洁能源替代与煤改气工程', '强化工业窑炉在线监控'],
+    'CO':    ['治理机动车尾气与怠速排放', '强化冬季取暖燃煤监管', '排查密闭空间与工业锅炉一氧化碳隐患'],
+}
+
+PERSONAL_ACTIONS = {
+    'PM2.5': ['减少户外活动', '外出佩戴 KN95 级别口罩', '关闭门窗并开启空气净化器'],
+    'PM10':  ['户外活动做好防护', '避免剧烈运动', '回家后及时清洗面部与鼻腔'],
+    'O3_8h': ['午后时段减少户外停留', '通风优先选择清晨', '敏感人群避免长时间户外'],
+    'NO2':   ['减少私家车出行', '避开主干道等拥堵路段', '骑行或步行时远离车流'],
+    'SO2':   ['减少户外活动', '敏感人群做好呼吸防护', '居家及时关闭门窗'],
+    'CO':    ['保持室内通风', '不在密闭空间使用燃油设备', '避免吸入二手烟'],
+}
+
+_GOOD_NOTE = '空气质量佳，适宜外出游玩'
+
+
+def _iaqi(conc, pairs):
+    """浓度 → IAQI（线性插值）；None/非有限返回 None；超出档顶按最高档 IAQI 封顶"""
+    if conc is None or pd.isna(conc) or conc <= 0:
+        return None
+    levels, caps = pairs
+    for i in range(len(levels) - 1):
+        if conc <= caps[i + 1]:
+            lo_c, hi_c = caps[i], caps[i + 1]
+            lo_i, hi_i = levels[i], levels[i + 1]
+            if hi_c == lo_c:
+                return float(hi_i)
+            return float(hi_i - (hi_i - lo_i) * (hi_c - conc) / (hi_c - lo_c))
+    return float(levels[-1])
+
+
+def _judge(day_row, threshold):
+    """某一天（Series）：返回 (main_list, good, note)"""
+    iaqis = {}
+    for col in ['SO2_24h', 'CO_24h', 'NO2_24h', 'O3_8h_24h', 'PM10_24h', 'PM2_5_24h']:
+        iaqis[col] = _iaqi(day_row[col], _POLLUTANT_BREAKS[col])
+    aqi = float(day_row['AQI'])
+    if aqi <= threshold:
+        return [], True, _GOOD_NOTE
+    values = {col: v for col, v in iaqis.items() if v is not None and v > 0}
+    if not values:
+        return [], True, _GOOD_NOTE
+    mx = max(values.values())
+    mains = [CN_KEYS[col] for col, v in values.items() if v == mx]
+    return mains, False, ''
+
+
+def pollutant_analysis(df, aqi_threshold=50.0):
+    """每城市双粒度：最近 1 天主控因子判定（主要）+ 近 7 天频次参照（次要）
+
+    返回 DataFrame（每城一行）：CityCode CityName DateTime AQI main_pollutant
+    good note day1_gov day1_personal week7（后三个为 JSON 字符串）
+    week7 = {avg_aqi, good_days, freq{污染物:次数}, dominant, good}
+    """
+    rows = []
+    for city_code, g in df.groupby('CityCode'):
+        g = g.sort_values('DateTime')
+        latest = g.iloc[-1]
+        mains, good, note = _judge(latest, aqi_threshold)
+        day1_gov = [x for m in mains for x in GOV_ACTIONS[m]]
+        day1_personal = [x for m in mains for x in PERSONAL_ACTIONS[m]]
+        if not mains:
+            day1_gov, day1_personal = [], []
+
+        tail = g.tail(7)
+        freq = {}
+        avg_aqi = float(tail['AQI'].mean()) if len(tail) else 0.0
+        good_days = 0
+        for _, day in tail.iterrows():
+            m, is_good, _ = _judge(day, aqi_threshold)
+            if is_good:
+                good_days += 1
+            for x in m:
+                freq[x] = freq.get(x, 0) + 1
+        dominant = max(freq, key=freq.get) if freq else None
+        week7 = {
+            'avg_aqi': round(avg_aqi, 2),
+            'good_days': int(good_days),
+            'freq': freq,
+            'dominant': dominant,
+            'good': good_days == len(tail),
+        }
+
+        rows.append({
+            'CityCode': int(city_code),
+            'CityName': latest['CityName'],
+            'DateTime': str(latest['DateTime']),
+            'AQI': round(float(latest['AQI']), 1),
+            'main_pollutant': '+'.join(mains) if mains else '-',
+            'good': 1 if good else 0,
+            'note': note,
+            'day1_gov': json.dumps(day1_gov, ensure_ascii=False),
+            'day1_personal': json.dumps(day1_personal, ensure_ascii=False),
+            'week7': json.dumps(week7, ensure_ascii=False),
+        })
+    return pd.DataFrame(rows) if rows else pd.DataFrame(columns=[
+        'CityCode', 'CityName', 'DateTime', 'AQI', 'main_pollutant',
+        'good', 'note', 'day1_gov', 'day1_personal', 'week7'])
