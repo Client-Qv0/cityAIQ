@@ -1034,4 +1034,131 @@ mkdir -p public/geo && curl -o public/geo/china.json https://geo.datav.aliyuncs.
 
 > **说明：** 阶段一`results/*.json` 保留作报告备料；前端一律经 API 直读数据库（实时更新靠 `script/req/getAQI.py` 刷新 + 页面刷新）。
 
+---
+
+# 阶段三：主要污染物分析与建议
+
+> **目标：** 对每座城市做**双粒度**分析（仅城市粒度，不做省/全国）：
+> - **主要（最近 1 天）**：当天 IAQI 主控因子判定主要污染物 + 政府/个人建议
+> - **参照（近 7 天）**：7 日 AQI 均值、非优日主要污染物出现频次、7 日优良天数
+> AQI 不超过阈值（默认 50）时输出"空气质量佳，适宜外出游玩"。前端在**城市页**展示（省页不展示）。
+
+**判定方法（HJ 633）：** `IAQI = (IHi−ILo)/(CHi−CLo)·(C−CLo) + ILo`，逐污染物取浓度→IAQI；**主要污染物 = IAQI 最大者**（并列取多；浓度/IAQI 为 0 不参与）。近 7 天频次 = 最近 7 个 DateTime 逐日判定（AQI>阈值日才有 main），统计各污染物出现次数；7 天全 good 时 week7.good=true。建议模板以 day1 为主参考，week7 提供"持续性"提示。
+
+**数据通路（双端复刻，同 predict 模式）：**
+- Python：`script/analysis/analysis.py` 新增 → `script/main.py` 导出 `results/pollutant_analysis.csv/json`（键=CityCode）
+- TS：`src/lib/pollutant.ts` 复刻（vitest 与 Python 同边界向量）→ `qCity` 响应内嵌 `pollutant` 块（day1+week7）→ 城市页卡片；`?threshold=` URL 参数（50/100/150，默认 50）
+
+## 国标断点表（24h / O3 8h，IAQI 档浓度）
+
+```
+SO2_24h:   [0,50,100,150,200,300,500] → [0,50,150,475,800,1600,2620]
+CO_24h:    [0,50,100,150,200,300,500] → [0,2,4,14,24,36,48]
+NO2_24h:   [0,50,100,150,200,300,500] → [0,40,80,180,280,565,750]
+O3_8h_24h: [0,50,100,150,200,300]     → [0,100,160,215,265,800]   （超出按 300 封顶）
+PM10_24h:  [0,50,100,150,200,300,500] → [0,50,150,250,350,420,500]
+PM2_5_24h: [0,50,100,150,200,300,500] → [0,35,75,115,150,250,350]
+```
+
+## 建议模板（政府/个人各 3 条，按主要污染物映射）
+
+| 污染物 | 政府 | 个人 |
+|---|---|---|
+| PM2.5 | 扬尘/机动车排气管控、错峰生产 | 减少外出、N95、门窗+净化器 |
+| PM10 | 施工扬尘整治、道路积尘清扫 | 户外防护、避免剧烈运动 |
+| O3_8h | VOC/NOx 协同管控、午后错峰作业 | 午后减少户外、清晨通风 |
+| NO2 | 交通源管控（限行/柴油车/公交引导） | 减少私家车、避开主干道 |
+| SO2 | 燃煤达标排放、清洁能源替代 | 敏感人群防护、减少户外 |
+| CO | 尾气治理、取暖燃煤监管 | 保持通风、避免密闭空间 |
+
+---
+
+## 任务 1：Python 分析函数（TDD）
+
+**文件：**
+- 修改：`script/analysis/analysis.py`、`script/tests/test_analysis.py`
+
+- [ ] **步骤 1：追加 pytest（构造两城 fake df：A 城最新 PM2.5 主导（AQI=120）；B 城最新 AQI≤50；两城均含 8+ 天历史以便 week7）**
+
+```python
+def test_pollutant_analysis_main_pollutant():
+    out = pollutant_analysis(_fake_df_pollutant(), aqi_threshold=50)
+    a = out[out['CityName'] == 'A市'].iloc[0]
+    assert a['main_pollutant'] == 'PM2.5'
+    assert len(json.loads(a['gov_actions'])) == 3
+    assert len(json.loads(a['personal_actions'])) == 3
+
+def test_pollutant_analysis_below_threshold_good():
+    out = pollutant_analysis(_fake_df_pollutant(), aqi_threshold=50)
+    b = out[out['CityName'] == 'B市'].iloc[0]
+    assert bool(b['good']) is True
+    assert b['note'] == '空气质量佳，适宜外出游玩'
+
+def test_pollutant_analysis_week7_frequency():
+    out = pollutant_analysis(_fake_df_pollutant(), aqi_threshold=50)
+    a = out[out['CityName'] == 'A市'].iloc[0]
+    w = json.loads(a['week7'])
+    assert w['avg_aqi'] == 120.0          # 7 日 AQI 均值
+    assert 'PM2.5' in w['freq']            # 频次字典含主导污染物
+
+def test_iaqi_boundary_pm25_75_iaqi100():
+    assert _iaqi(75.0, _POLLUTANT_BREAKS['PM2_5_24h']) == 100.0
+```
+
+- [ ] **步骤 2：实现（analysis.py 尾部追加）**
+
+```python
+_POLLUTANT_BREAKS = {...见上表...}
+GOV_ACTIONS / PERSONAL_ACTIONS = {...6 污染物各 3 条...}
+
+def _iaqi(conc, pairs) -> float | None   # 线性插值；None 浓度 → None；超出档顶按最高档 IAQI
+def pollutant_analysis(df, aqi_threshold=50.0):
+    # 返回 DataFrame（每城一行）：
+    # CityCode/CityName/DateTime/AQI/main_pollutant/good/note/
+    # day1_gov_json/day1_personal_json（json.dumps）、week7_json
+    # week7 = { avg_aqi, good_days, freq: {污染物: 次数}, dominant(频次最高者|None), good(7 日全优) }
+```
+
+- [ ] **步骤 3：`pytest script/tests/test_analysis.py -v` 全绿（14 条）**
+
+## 任务 2：Python 导出集成
+
+**文件：** 修改 `script/analysis/main.py`
+
+- [ ] **步骤 1：`_write_pollutants(df)` → `results/pollutant_analysis.csv`（actions 列 `json.dumps`）+ `results/pollutant_analysis.json`（键 CityCode）**
+- [ ] **步骤 2：`python script/main.py` 冒烟，确认两文件出现且 338 行**
+
+## 任务 3：TS 复刻（vitest 同向量）
+
+**文件：** 创建 `src/lib/pollutant.ts`、`tests/pollutant.test.ts`；修改 `src/types/index.ts`
+
+- [ ] **步骤 1：vitest（与 Python 同边界）**
+  - `iaqi(75, PM2.5) = 100`；`analyzePollutant(rows14, 50)`：day1 PM2.5 主导 → `main=['PM2.5']`、gov 3 条；AQI≤阈值 → good + note 佳；week7.freq 含 PM2.5
+- [ ] **步骤 2：实现**：`POLLUTANT_BREAKS`（同表，PM2.5 key 带点）、`iaqi()`、`analyzePollutant(rows, threshold)` →
+```ts
+{ good, note, AQI, main: MetricKey[], government: string[], personal: string[],
+  week7: { avg_aqi: number; good_days: number; freq: Record<string, number>; dominant: MetricKey | null; good: boolean } }
+```
+
+## 任务 4：qCity 扩展 + 城市页卡片
+
+**文件：** 修改 `src/lib/queries.ts`、`src/app/[ProvinceJC]/[CityCode]/page.tsx`、`src/app/api/city/[cityCode]/route.ts`
+
+- [ ] **步骤 1：qCity SQL 增查 6 浓度列（不影响现有 daily 结构与性能），返回新增字段：**
+```ts
+pollutant: { good: boolean; note: string; AQI: number; main: MetricKey[]; government: string[]; personal: string[] }
+```
+- [ ] **步骤 2：API `?threshold=`（zod 可选 int 50/100/150 白名单，默认 50）**
+- [ ] **步骤 3：城市页 KPI 下方新增卡片"主要污染物分析与建议"**：
+  - **当日卡（主要）**：good → 大字"空气质量佳，适宜外出游玩"；否则 → 主要污染物徽章（METRIC_NAME）+ 当日 AQI + 政府建议 3 条 / 个人建议 3 条
+  - **近 7 日带（参照）**：7 日 AQI 均值、优良天数、主要污染物出现频次（如 O₃-8h ×5）、持续提示
+  - 顶部阈值切换（50/100/150，`?threshold=` 同步 URL）
+
+## 任务 5：验收
+
+- [ ] `pytest script/tests/`（Python 18+ 条）与 `npm test`（vitest 15+ 条）全绿
+- [ ] `/ZJ/330100` 页面显示分析卡片；`?threshold=150` 切至高阈值时出现"空气质量佳"城市
+- [ ] `curl /api/city/330100?threshold=100` 返回 pollutant 块
+- [ ] `npm run build` 通过
+
 

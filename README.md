@@ -116,6 +116,19 @@ npm run dev        # http://localhost:3000
 npm test           # 前端测试（12 条）
 ```
 
+### 局域网/虚拟机访问（仅开发模式）
+
+`npm run dev` 默认只允许 localhost 访问 dev 资源（图片、`/_next/*`、HMR 热更新）；
+若需通过 VMnet8 / 内网 IP（如 `http://26.104.66.42:3000`）访问，在 `next.config.ts` 中把该 IP 加入 `allowedDevOrigins` 后**重启 dev server**：
+
+```ts
+const nextConfig: NextConfig = {
+  allowedDevOrigins: ["26.104.66.42"], // 换成你的实际内网 IP；VM 网卡 IP 变化时记得同步
+}
+```
+
+生产模式（`npm run start`）无此限制，任意万网卡地址均可访问。
+
 ## 页面路由
 
 | 路由 | 内容 |

@@ -25,9 +25,9 @@ script/                  # Python 数据管线
     getAQI.py            #     城市近 14 日 AQI：爬取入库 & 读库
   analysis/              # 数据分析与预测
     data_loader.py       #     pandas 读库（load_aqi_df / load_cities_df）
-    analysis.py          #     统计与聚合（描述统计/排名/等级/趋势/省份汇总/相关矩阵/area_average/area_daily_aqi）
+    analysis.py          #     统计与聚合（描述统计/排名/等级/趋势/省份汇总/相关矩阵/area_average/area_daily_aqi/pollutant_analysis）
     predict.py           #     最小二乘预测明日 AQI + 95% 区间（14 点线性外推）
-    main.py              #     全量统计+全城预测+省/全国均值与明日预测
+    main.py              #     全量统计+全城预测+省/全国均值与明日预测+主要污染物分析
   tests/                 # pytest（17 条）
   main.py                # 命令行入口：python script/main.py
 src/                     # Next.js 前端（App Router）
@@ -78,6 +78,7 @@ npm test                 # 前端 vitest（12 条）
 ## 口径约定（Python 与前端严格一致）
 
 - **城市等权**：区域均值 = 每城 14 日均值 → 城市间平均；每日序列 = 每天先城市等权。前端 `src/lib/queries.ts` SQL 版与 Python `area_average/area_daily_aqi` 同口径
+- **主要污染物**：HJ 633 IAQI 主控因子法（浓度断点线性插值，`_POLLUTANT_BREAKS`/`POLLUTANT_BREAKS` 双端同表）；双粒度——最近 1 天判定（主要）+ 近 7 天频次（参照）；AQI ≤ 阈值（默认 50，可切 100/150）→ "空气质量佳，适宜外出游玩"；Python `pollutant_analysis` ↔ TS `analyzePollutant`，建议模板 GOV/PERSONAL_ACTIONS 双端字典一致
 - **预测**：最小二乘线性外推 `y = a + b·t`，`t = 0..n-1`，预测 `t = n`，95% 区间 = `pred ± t(0.975,n-2)·s·sqrt(1 + 1/n + (t_n−t̄)²/Sxx)`。Python `predict_next_aqi` ↔ TS `predictNext`，测试使用同一向量（`[3t+10]` → 52）
 - AQI 等级色板为 HJ 633 国标：优`#00e400` 良`#f6ec20` 轻`#ff7e00` 中`#ff0000` 重`#8f083a` 严重`#7e0023`
 
