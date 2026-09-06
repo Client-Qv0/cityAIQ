@@ -5,3 +5,4 @@ prisma/weather.db
 node_modules/
 .next/
 out/
+无关文件/
