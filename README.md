@@ -74,13 +74,9 @@
 │   ├── app/                   #   页面（page.tsx ×3）+ api/ Route Handlers
 │   ├── components/            #   chart/(EChart/ChinaMap/TrendChart/QualityPie) 等
 │   ├── lib/                   #   db/queries/predict/pollutant/jc/aqiColors/provinceMap/utils
-│   ├── types/  validations/   #   共享类型与 zod schema
-├── tests/                     # vitest（15 条）
+│   └── types/  validations/   #   共享类型与 zod schema
 ├── public/geo/china.json      # 中国省界 GeoJSON（本地化，前端地图数据源）
 ├── results/                   # 分析产物：CSV/PNG/JSON（报告与论文备料）
-├── .auto/plan.json            # auto 执行计划与状态
-├── 无关文件/                  # 综述、预测准确性评估报告、PPT 模板素材
-├── 结题报告.docx · 分工文档.md · 全功能流程图.md · 答辩PPT_V6_*.pptx
 ├── plan.md                    # 两期实现计划
 └── requirements.txt / package.json
 ```
