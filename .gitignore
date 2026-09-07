@@ -6,4 +6,11 @@ node_modules/
 .next/
 out/
 无关文件/
-.auto/plan.json
+.auto/
+script/auto/*.log
+script/auto/auto_status.json
+results/
+tsconfig.tsbuildinfo
+*.log
+.idea/
+*.docx.tmp
