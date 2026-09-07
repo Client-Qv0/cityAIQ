@@ -6,3 +6,4 @@ node_modules/
 .next/
 out/
 无关文件/
+.auto/plan.json

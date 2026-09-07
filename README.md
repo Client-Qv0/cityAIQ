@@ -15,7 +15,7 @@
   - 全国页：中国地图省均值着色、等级分布饼图、每日趋势（含明日预测点与区间）、省排名
   - 省份页：省内城市明细表（含预测值）、省每日趋势、7 项指标省 vs 全国对比
   - 城市页：14+1 天折线（14 日历史 + 明日预测），支持 AQI / SO₂ / CO / NO₂ / O₃-8h / PM10 / PM2.5 七个指标切换（`?key=`）
-- **测试**：Python pytest 17 条 + 前端 vitest 12 条
+- **测试**：Python pytest 21 条 + 前端 vitest 15 条
 
 ## 技术栈
 
@@ -59,21 +59,33 @@
 │   │   └── getAQI.py          #     城市近 14 日 AQI
 │   ├── analysis/              #   数据分析与预测
 │   │   ├── data_loader.py     #     pandas 读库
-│   │   ├── analysis.py        #     统计/聚合
+│   │   ├── analysis.py        #     统计/聚合/主控因子
 │   │   ├── predict.py         #     最小二乘预测
 │   │   └── main.py            #     全量分析入口
-│   ├── tests/                 #   pytest（17 条）
+│   ├── auto/                  #   数据自动化与预测验证
+│   │   ├── update_daily.py    #     更新器（--once/--daemon + 新鲜度跳过）
+│   │   ├── check_and_retry.py #     T3 检测与兜底（01:40 计划任务）
+│   │   ├── compare_prediction.py # 预测验证（t1 留一 / t2 记录 / t4 前向对比）
+│   │   ├── gen_v5_final.py    #     自动回填 V5 评估数值
+│   │   └── night_watch.py     #     夜间状态观察
+│   ├── tests/                 #   pytest（21 条）
 │   └── main.py                #   命令行入口
 ├── src/                       # Next.js 前端
 │   ├── app/                   #   页面（page.tsx ×3）+ api/ Route Handlers
 │   ├── components/            #   chart/(EChart/ChinaMap/TrendChart/QualityPie) 等
-│   ├── lib/                   #   db/queries/predict/jc/aqiColors/provinceMap/utils
+│   ├── lib/                   #   db/queries/predict/pollutant/jc/aqiColors/provinceMap/utils
 │   ├── types/  validations/   #   共享类型与 zod schema
-├── tests/                     # vitest（12 条）
+├── tests/                     # vitest（15 条）
 ├── public/geo/china.json      # 中国省界 GeoJSON（本地化，前端地图数据源）
 ├── results/                   # 分析产物：CSV/PNG/JSON（报告与论文备料）
+├── .auto/plan.json            # auto 执行计划与状态
+├── 无关文件/                  # 综述、预测准确性评估报告、PPT 模板素材
+├── 结题报告.docx · 分工文档.md · 全功能流程图.md · 答辩PPT_V6_*.pptx
 ├── plan.md                    # 两期实现计划
 └── requirements.txt / package.json
+```
+
+> 自动化触发：`npm run dev/start` 启动瞬间（predev/prestart 钩子）+ Windows 计划任务每日 01:20（更新）/ 01:40（T3 检测兜底）。
 ```
 
 ## 快速开始
@@ -102,7 +114,7 @@ py script/req/getAQI.py
 
 ```bash
 py script/main.py   # 统计+预测 → 覆盖写出 results/
-py -m pytest script/tests/ -v   # Python 测试（17 条）
+py -m pytest script/tests/ -v   # Python 测试（21 条）
 ```
 
 产物：`summary_stats.csv`、`city_ranking.csv`、`quality_distribution.csv`、`daily_trend.csv`、`province_summary.csv`、`correlation.csv`、`predictions.csv`、`area_averages.csv`、`overview.png`、`province_overview.png`、`summary.json`、`predictions.json`、`area_averages.json`。
@@ -113,7 +125,7 @@ py -m pytest script/tests/ -v   # Python 测试（17 条）
 npm install        # 或 npm ci
 npm run dev        # http://localhost:3000
 # 生产构建：npm run build && npm run start
-npm test           # 前端测试（12 条）
+npm test           # 前端测试（15 条）
 ```
 
 ### 局域网/虚拟机访问（仅开发模式）

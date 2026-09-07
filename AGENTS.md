@@ -28,21 +28,30 @@ script/                  # Python 数据管线
     analysis.py          #     统计与聚合（描述统计/排名/等级/趋势/省份汇总/相关矩阵/area_average/area_daily_aqi/pollutant_analysis）
     predict.py           #     最小二乘预测明日 AQI + 95% 区间（14 点线性外推）
     main.py              #     全量统计+全城预测+省/全国均值与明日预测+主要污染物分析
-  tests/                 # pytest（17 条）
+  auto/                  # 数据自动化与预测验证
+    update_daily.py      #     更新器：--once（钩子/计划任务）与 --daemon（凌晨窗口）；新鲜度=库最新≥昨天则跳过
+    check_and_retry.py   #     T3 检测与兜底：01:40 计划任务入口，失败重试3次×15 分钟，成功后自动 T4 + 生成 V5
+    compare_prediction.py#     预测验证：t1 留一（13→14 天）/ t2 记录下一天预测 / t4 前向对比（幂等）
+    gen_v5_final.py      #     T4 后自动回填 V5 评估页数值
+    night_watch.py       #     夜间状态观察（05 分钟一拍，日志 watch.log）
+  tests/                 # pytest（21 条）
   main.py                # 命令行入口：python script/main.py
 src/                     # Next.js 前端（App Router）
   app/page.tsx           #   / 全国概览（地图着色/等级饼图/趋势+预测点/省排名）
   app/[ProvinceJC]/page.tsx          # 省页（段名大写，params 键兼容见页内注释）
   app/[ProvinceJC]/[CityCode]/page.tsx  # 城市页（?key= 切换指标，14+1 天折线）
   app/not-found.tsx
-  app/api/               #   Route Handlers：national / province/[provinceJC] / city/[cityCode]?key=
-  components/            #   chart/(EChart ChinaMap TrendChart QualityPie) ui/ MetricSwitcher ProvinceCompare
-  lib/                   #   db queries predict jc aqiColors provinceMap utils
+  app/api/               #   Route Handlers：national / province/[provinceJC] / city/[cityCode]?key=&threshold=
+  components/            #   chart/(EChart ChinaMap TrendChart QualityPie) ui/ MetricSwitcher ProvinceCompare PollutantCard Sidebar
+  lib/                   #   db queries predict pollutant jc aqiColors provinceMap utils
   types/  validations/   #   共享类型 / zod schema（指标白名单）
 public/geo/china.json    # 中国省界 GeoJSON（本地化，来源 longwosion/geojson-map-china，jsdelivr 拉取）
 results/                 # 分析产物：CSV/PNG/JSON（报告备料）
-tests/                   # vitest：predict/jc/queries（12 条）
-plan.md                  # 阶段一（Python 分析）+ 阶段二（前端）实现计划
+tests/                   # vitest：predict/pollutant/jc/queries（15 条）
+.auto/plan.json          # auto 执行计划与状态记录
+无关文件/                 # 综述、预测准确性评估报告、PPT 模板素材
+结题报告.docx · 分工文档.md · 全功能流程图.md · 答辩PPT（V1~V6 系列）
+plan.md                  # 各阶段实现计划
 city.json / city_day_AQI.json  # 接口返回格式样例，仅作字段参考（代码不读取）
 文档.docx                # 课程材料（已被 .gitignore 忽略）
 答辩PPT大纲.md
@@ -55,13 +64,16 @@ city.json / city_day_AQI.json  # 接口返回格式样例，仅作字段参考�
 C:\Users\ASUS\AppData\Local\Programs\Python\Python313\python.exe script/req/getdata.py  # 刷新省份+城市，约 2 分钟
 C:\...\python.exe script/req/getAQI.py                                                    # 全量刷新 AQI，15~20 分钟，可中断续跑
 C:\...\python.exe script/main.py                                                          # 全量分析+预测，覆盖写出 results/
-C:\...\python.exe -m pytest script/tests/ -v                                              # Python 全部测试（17 条）
-npm run dev              # 前端开发服务器（localhost:3000）
+C:\...\python.exe script/auto/compare_prediction.py t1|t2|t4                              # 预测验证（t4 幂等追加报告）
+C:\...\python.exe -m pytest script/tests/ -v                                              # Python 全部测试（21 条）
+npm run dev              # 前端开发服务器（localhost:3000；predev 钩子先自动更新数据）
 npm run build            # 前端生产构建（含 tsc 校验）
-npm run start            # 前端生产模式
-npm test                 # 前端 vitest（12 条）
+npm run start            # 前端生产模式（prestart 钩子先自动更新数据；不加 prebuild）
+npm test                 # 前端 vitest（15 条）
 # 依赖：requests（爬虫）；numpy/pandas/matplotlib（分析，requirements.txt）；Next 全家桶见 package.json
 ```
+
+**数据自动化（T1）**：触发 = ①`npm run dev/start` 瞬间（package.json pre 钩子 → `script/auto/update_daily.py --once`）；②Windows 计划任务 `CityAQI-DailyUpdate`（每日 01:20）与 `CityAQI-ChangeCheck`（每日 01:40，T3 检测/兜底/自动 T4）；新鲜度判据 = 库 `MAX(DateTime).date() >= 昨天`（避免凌晨白爬）；状态与日志落 `script/auto/auto_status.json` / `auto_update.log` / `watch.log`。**注意**：计划任务为交互式，需要电脑开机且用户登录；曾因 `py` 启动器在 npm 环境解析失败——钩子一律用 Python 绝对路径。
 
 路径以 `__file__` 推导（`script/../prisma/weather.db`），Python 侧从任意工作目录运行均可；Node 侧约定从项目根运行（`db.ts` 用 `process.cwd()`）。
 
