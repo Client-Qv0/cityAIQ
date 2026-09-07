@@ -125,13 +125,13 @@ py -m pytest script/tests/ -v   # Python 测试（21 条）
 npm install        # 或 npm ci
 npm run dev        # http://localhost:3000
 # 生产构建：npm run build && npm run start
-npm test           # 前端测试（15 条）
+num run start
 ```
 
 ### 局域网/虚拟机访问（仅开发模式）
 
 `npm run dev` 默认只允许 localhost 访问 dev 资源（图片、`/_next/*`、HMR 热更新）；
-若需通过 VMnet8 / 内网 IP（如 `http://26.104.66.42:3000`）访问，在 `next.config.ts` 中把该 IP 加入 `allowedDevOrigins` 后**重启 dev server**：
+若需通过 VMnet8 / 内网 IP（如 `http://192.168.63.156:3000`）访问，在 `next.config.ts` 中把该 IP 加入 `allowedDevOrigins` 后**重启 dev server**：
 
 ```ts
 const nextConfig: NextConfig = {
