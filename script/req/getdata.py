@@ -94,7 +94,7 @@ def sync_all_cities():
     failed = []
     for i, p in enumerate(provinces):
         if i > 0:
-            time.sleep(random.uniform(1.5, 3))
+            time.sleep(random.uniform(0.25,0.75))
         try:
             n = len(sync_cities(p['Id']))
             print(f"已同步 {p['ProvinceName']}（{n} 个城市）")
